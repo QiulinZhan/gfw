@@ -1,5 +1,5 @@
 <resources>
-    <style name="AppThemeBase" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppThemeBase" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <!--<item name="windowNoTitle">false</item>-->
@@ -8,6 +8,7 @@
         <item name="android:windowBackground">@color/theme_window_background</item>
         <item name="android:alertDialogTheme">@style/BaseTheme.Dialog</item>
         <item name="android:textColorPrimary">@color/theme_window_background</item>
+        <item name="actionMenuTextColor">@color/theme_window_background</item>
     </style>
     <style name="AppTheme" parent="AppThemeBase"/>
     <style name="AppTheme.Welcome" parent="@android:style/Theme.NoTitleBar.Fullscreen">
