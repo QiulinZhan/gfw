@@ -38,7 +38,7 @@
     <color name="black">#ff000000</color><!--黑色 -->
     <color name="blue">#ff4ba3ff</color>
     <color name="text_default">#ff2c2c2c</color>
-    <color name="activity_bg_color">#fff6f6f7</color>
+    <color name="activity_bg_color">#f6f6f7</color>
     <color name="startup_checking_bg_color">#ff3a96fa</color>
     <color name="guide_bg_color">#73000000</color>
     <color name="view_bg_color">#ffffffff</color>

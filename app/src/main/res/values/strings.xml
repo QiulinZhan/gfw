@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">天网</string>
-
+    <string name="home_menu1">诈骗电话</string>
+    <string name="home_menu2">诈骗短信</string>
+    <string name="home_menu3">号码查询</string>
+    <string name="home_menu4">反诈骗宣传</string>
+    <string name="home_menu5">诈骗举报</string>
+    <string name="home_menu6">意见建议</string>
 </resources>

@@ -1,26 +1,41 @@
 package cn.call110.adapter;
 
-import android.widget.Adapter;
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+
+import java.util.List;
+
+import cn.call110.R;
+import cn.call110.model.HomeMenuItem;
 
 /**
  * Created by zhan on 2016/11/7.
  */
 
-public class HomeAdapter extends Adapter {
+public class HomeAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
-    private List<VideoViewItem> list;
-    public VideoListAdapter(Context context, List<VideoViewItem> list) {
-        this.list = list;
+    private List<HomeMenuItem> list;
+    private Context context;
+    public HomeAdapter(Context context, List<HomeMenuItem> list) {
         layoutInflater = LayoutInflater.from(context);
+        this.context = context;
+        this.list = list;
     }
     @Override
     public int getCount() {
-        return this.list != null ? this.list.size(): 0 ;
+        return list.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return this.list.get(position);
+        return list.get(position);
     }
 
     @Override
@@ -32,17 +47,16 @@ public class HomeAdapter extends Adapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view;
         if (convertView == null) {
-            view = layoutInflater.inflate(R.layout.video_item, parent, false);
+            view = layoutInflater.inflate(R.layout.home_item, parent, false);
         } else {
             view = convertView;
         }
-        ImageView imageView = (ImageView) view.findViewById(R.id.countryImage);
-//        TextView textView = (TextView) view.findViewById(R.id.countryName);
-        VideoViewItem item = list.get(position);
-        view.setTag(item.getImageId());
-        //获取自定义的类实例
-        Picasso.with(imageView.getContext()).load(item.getImageId()).into(imageView);
-        //textView.setText(item.getName());
+        ImageView imageView = (ImageView) view.findViewById(R.id.icon);
+        TextView textView = (TextView) view.findViewById(R.id.title);
+        HomeMenuItem item = list.get(position);
+        view.setTag(item);
+        Picasso.with(context).load(item.getIcon()).into(imageView);
+        textView.setText(item.getTitle());
         return view;
     }
 }
