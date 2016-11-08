@@ -9,15 +9,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="fitCenter"
-        android:layout_marginTop="0dp"
-        android:paddingBottom="30dp"
+        android:layout_marginTop="20dp"
+        android:paddingBottom="40dp"
         />
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:textSize="15sp"
+        android:textSize="12sp"
         android:clickable="false"
         android:textColor="@color/text"
         android:layout_alignParentBottom="true"

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_setting"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="cn.call110.ui.SettingActivity">
+    <include layout="@layout/toolbar" />
+
+    <Switch
+        android:layout_below="@+id/toolbar"
+        android:background="@color/list_background_normal"
+        android:paddingTop="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:id="@+id/phoneSwitch"
+        android:text="开启拦截"
+        android:textSize="18sp"
+        android:textStyle="normal"
+        android:textColor="@color/color_gray"
+        android:gravity="center_vertical"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"/>
+
+
+</RelativeLayout>
