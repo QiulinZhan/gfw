@@ -7,10 +7,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
 import cn.call110.R;
+import cn.call110.utils.DataUtils;
 
 public class WelcomeActivity extends Activity {
     private Timer timer;
@@ -38,6 +40,7 @@ public class WelcomeActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+        DataUtils.initPhoneList();
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -45,6 +48,7 @@ public class WelcomeActivity extends Activity {
                 handler.sendEmptyMessage(1314);
             }
         },2000,5000);
+
     }
     @Override
     protected void onDestroy(){

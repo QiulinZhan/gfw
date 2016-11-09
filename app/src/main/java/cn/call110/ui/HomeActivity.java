@@ -36,7 +36,6 @@ public class HomeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         mGridView = (GridView) findViewById(R.id.grid);
         list = new ArrayList();
-
         String[] menuTitles = {getString(R.string.home_menu1), getString(R.string.home_menu2), getString(R.string.home_menu3), getString(R.string.home_menu4), getString(R.string.home_menu5), getString(R.string.home_menu6)};
         for(int i = 0; i < menuTitles.length; i ++) {
             list.add(new HomeMenuItem().setIcon(icons[i]).setTitle(menuTitles[i]));

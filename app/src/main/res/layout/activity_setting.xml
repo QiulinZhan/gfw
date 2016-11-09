@@ -17,10 +17,20 @@
         android:text="开启拦截"
         android:textSize="18sp"
         android:textStyle="normal"
-        android:textColor="@color/color_gray"
+        android:textColor="@color/secondary"
         android:gravity="center_vertical"
         android:paddingLeft="12dp"
         android:paddingRight="12dp"/>
-
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/colorPrimary"
+        android:layout_below="@id/phoneSwitch"
+        android:layout_marginTop="100dp"
+        android:id="@+id/update"
+        android:text="更新数据"
+        android:textColor="@color/windowBackgroundColor"
+        android:textSize="18sp"
+        />
 
 </RelativeLayout>

@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.0"
@@ -21,6 +20,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         targetCompatibility 1.8
         sourceCompatibility 1.8
@@ -39,6 +39,8 @@ dependencies {
     compile 'com.mikepenz:iconics-core:2.8.1@aar'
     compile 'com.mikepenz:fontawesome-typeface:4.7.0.0@aar'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha5'
+    compile 'com.google.code.gson:gson:2.8.0'
+    compile 'com.github.hotchemi:permissionsdispatcher:2.2.0'
+    annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.2.0'
     testCompile 'junit:junit:4.12'
 }

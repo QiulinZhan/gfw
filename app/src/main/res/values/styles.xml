@@ -5,7 +5,7 @@
         <!--<item name="windowNoTitle">false</item>-->
         <!--<item name="windowActionBar">false</item>-->
         <item name="titleTextColor">@color/theme_window_background</item>
-        <item name="colorAccent">@color/theme_accent</item>
+        <item name="colorAccent">@color/colorPrimary</item>
         <item name="android:windowBackground">@color/theme_window_background</item>
         <item name="android:alertDialogTheme">@style/BaseTheme.Dialog</item>
         <item name="android:textColorPrimary">@color/theme_window_background</item>
