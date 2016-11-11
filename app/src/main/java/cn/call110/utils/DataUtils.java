@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,11 @@ public class DataUtils {
     public static SharedPreferences sharedPreferences;
     public static Gson gson = new Gson();
     private static SharedPreferences preferences;
-    public static List<Phone> phones = new ArrayList<>();
+    public static List<Phone> black = new ArrayList<>();
+    public static List<Phone> white = new ArrayList<>();
+    public static final String phoneHeadOff = "phone_switch"; // 电话拦截
+    public static final String smsHeadOff = "sms_Head_off"; // 短信拦截
+    public static final String alertSwitch = "alert_switch"; // 来电提示
     public static void init(Context context){
         preferences = context.getSharedPreferences(user_info, Context.MODE_PRIVATE);
     }
@@ -42,14 +45,16 @@ public class DataUtils {
         editor.commit();
     }
     public static void initPhoneList() {
-        if(!phones.isEmpty()){
+        if(!black.isEmpty() || !white.isEmpty()){
             return;
         }
         String str = preferences.getString("phone_list", null);
         if(str == null){
             remoteData();
         }else{
-            phones = gson.fromJson(str,JsonObject.class).getData();
+            JsonObject json = gson.fromJson(str,JsonObject.class);
+            black = json.getBlack();
+            white = json.getWhite();
         }
 
     }
@@ -70,12 +75,11 @@ public class DataUtils {
                     @Override
                     public void onResponse(String response, int id) {
                         if(response != null && response.length() > 0) {
-                            String str = response.substring(5, response.length() - 1);
-                            JsonObject json = gson.fromJson(str, JsonObject.class);
-                            if(!json.getData().isEmpty()) {
-                                phones = json.getData();
-                                savePhoneList(str);
-                            }
+                            JsonObject json = gson.fromJson(response, JsonObject.class);
+                            black = json.getBlack();
+                            white = json.getWhite();
+                            savePhoneList(response);
+
                         }
                     }
                 });

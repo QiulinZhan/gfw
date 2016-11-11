@@ -10,6 +10,7 @@ public class Phone {
     private String city;
     private String remark;
     private Long createTime;
+    private Integer type;
 
     public Long getCreateTime() {
         return createTime;
@@ -49,5 +50,13 @@ public class Phone {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 }

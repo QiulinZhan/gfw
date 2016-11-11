@@ -43,12 +43,11 @@ public class HomeActivity extends AppCompatActivity {
         mAdapter = new HomeAdapter(this, list);
         mGridView.setAdapter(mAdapter);
         toolbar.setOnMenuItemClickListener(e -> {
-            switch (e.getItemId()) {
-                case R.id.setting:
-                    IntentUtils.launch(this, SettingActivity.class);
-                    break;
+            if(R.id.setting == e.getItemId()){
+                IntentUtils.launch(this, SettingActivity.class);
+                return true;
             }
-            return true;
+            return false;
         });
     }
 

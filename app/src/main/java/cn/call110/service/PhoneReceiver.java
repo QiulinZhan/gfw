@@ -5,8 +5,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.PixelFormat;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
+import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.internal.telephony.ITelephony;
@@ -22,12 +25,39 @@ import cn.call110.utils.DataUtils;
 
 public class PhoneReceiver extends BroadcastReceiver {
     private static TelephonyManager manager;
+	private static WindowManager wm;
+	private static TextView tv;
+	private static boolean phoneHeadOff = DataUtils.getDate("phone_switch");
+	private static boolean smsHeadOff = DataUtils.getDate("sms_HeadOff");
 	@Override
 	public void onReceive(Context context, Intent intent) {
 
 		if (intent.getAction().equals(Intent.ACTION_NEW_OUTGOING_CALL)) {
 			// 如果是去电（拨出）
 		} else {
+			tv = new TextView(context);
+			tv.setTextSize(25);
+			//得到连接
+			tv.setText("超级大骗子");
+			wm = (WindowManager) context.getApplicationContext()
+					.getSystemService(Context.WINDOW_SERVICE);
+			//构造显示参数
+			WindowManager.LayoutParams params = new WindowManager.LayoutParams();
+
+			//在所有窗体之上
+			params.type = WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY;
+
+			//设置失去焦点，不能被点击
+			params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+					| WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+			//高度宽度
+			params.width = WindowManager.LayoutParams.WRAP_CONTENT;
+			params.height = WindowManager.LayoutParams.WRAP_CONTENT;
+			//透明
+			params.format = PixelFormat.RGBA_8888;
+			//显示
+			wm.addView(tv, params);
+
 			manager = (TelephonyManager) context.getSystemService(Service.TELEPHONY_SERVICE);
 			// 设置一个监听器
 			manager.listen(listener, PhoneStateListener.LISTEN_CALL_STATE);
@@ -48,10 +78,11 @@ public class PhoneReceiver extends BroadcastReceiver {
 					break;
 				// 当电话呼入时
 				case TelephonyManager.CALL_STATE_RINGING:
+
 					if(fuckIt(incomingNumber)){
 						stopCall();
 					}else{
-						String i = DataUtils.phones.toString();
+						String i = DataUtils.black.toString();
 						System.out.print(i);
 					}
 				break;
@@ -62,7 +93,7 @@ public class PhoneReceiver extends BroadcastReceiver {
 		if(!DataUtils.getDate("phone_switch")){
 			return false;
 		}
-		for(Phone p : DataUtils.phones){
+		for(Phone p : DataUtils.black){
 			if(number.equals(p.getPhone()))
 				return true;
 		}

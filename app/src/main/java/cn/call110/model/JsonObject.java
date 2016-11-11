@@ -8,7 +8,8 @@ import java.util.List;
 
 public class JsonObject {
     private String code;
-    private List<Phone> data;
+    private List<Phone> white;
+    private List<Phone> black;
 
     public String getCode() {
         return code;
@@ -18,11 +19,20 @@ public class JsonObject {
         this.code = code;
     }
 
-    public List<Phone> getData() {
-        return data;
+
+    public List<Phone> getWhite() {
+        return white;
     }
 
-    public void setData(List<Phone> data) {
-        this.data = data;
+    public void setWhite(List<Phone> white) {
+        this.white = white;
+    }
+
+    public List<Phone> getBlack() {
+        return black;
+    }
+
+    public void setBlack(List<Phone> black) {
+        this.black = black;
     }
 }
