@@ -6,15 +6,43 @@
     android:layout_height="match_parent"
     tools:context="cn.call110.ui.SettingActivity">
     <include layout="@layout/toolbar" />
-
+    <!-- 来电提示 -->
     <Switch
         android:layout_below="@+id/toolbar"
         android:background="@color/list_background_normal"
         android:paddingTop="0dp"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:id="@+id/alertSwitch"
+        android:text="来电提示"
+        android:textSize="18sp"
+        android:textStyle="normal"
+        android:textColor="@color/secondary"
+        android:gravity="center_vertical"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"/>
+    <Switch
+        android:layout_below="@+id/alertSwitch"
+        android:background="@color/list_background_normal"
+        android:paddingTop="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
         android:id="@+id/phoneSwitch"
-        android:text="开启拦截"
+        android:text="电话拦截"
+        android:textSize="18sp"
+        android:textStyle="normal"
+        android:textColor="@color/secondary"
+        android:gravity="center_vertical"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"/>
+    <Switch
+        android:layout_below="@+id/phoneSwitch"
+        android:background="@color/list_background_normal"
+        android:paddingTop="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:id="@+id/smsSwitch"
+        android:text="短信拦截"
         android:textSize="18sp"
         android:textStyle="normal"
         android:textColor="@color/secondary"
@@ -25,8 +53,8 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@color/colorPrimary"
-        android:layout_below="@id/phoneSwitch"
-        android:layout_marginTop="100dp"
+        android:layout_below="@id/smsSwitch"
+        android:layout_marginTop="20dp"
         android:id="@+id/update"
         android:text="更新数据"
         android:textColor="@color/windowBackgroundColor"

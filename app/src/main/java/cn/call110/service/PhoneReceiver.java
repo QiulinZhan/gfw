@@ -27,68 +27,87 @@ public class PhoneReceiver extends BroadcastReceiver {
     private static TelephonyManager manager;
 	private static WindowManager wm;
 	private static TextView tv;
-	private static boolean phoneHeadOff = DataUtils.getDate("phone_switch");
-	private static boolean smsHeadOff = DataUtils.getDate("sms_HeadOff");
 	@Override
 	public void onReceive(Context context, Intent intent) {
-
 		if (intent.getAction().equals(Intent.ACTION_NEW_OUTGOING_CALL)) {
 			// 如果是去电（拨出）
 		} else {
-			tv = new TextView(context);
-			tv.setTextSize(25);
-			//得到连接
-			tv.setText("超级大骗子");
-			wm = (WindowManager) context.getApplicationContext()
-					.getSystemService(Context.WINDOW_SERVICE);
-			//构造显示参数
-			WindowManager.LayoutParams params = new WindowManager.LayoutParams();
-
-			//在所有窗体之上
-			params.type = WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY;
-
-			//设置失去焦点，不能被点击
-			params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-					| WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
-			//高度宽度
-			params.width = WindowManager.LayoutParams.WRAP_CONTENT;
-			params.height = WindowManager.LayoutParams.WRAP_CONTENT;
-			//透明
-			params.format = PixelFormat.RGBA_8888;
-			//显示
-			wm.addView(tv, params);
 
 			manager = (TelephonyManager) context.getSystemService(Service.TELEPHONY_SERVICE);
 			// 设置一个监听器
-			manager.listen(listener, PhoneStateListener.LISTEN_CALL_STATE);
+			manager.listen(new PhoneStateListener() {
+				@Override
+				public void onCallStateChanged(int state, String incomingNumber) {
+					// state 当前状态 incomingNumber,貌似没有去电的API
+					super.onCallStateChanged(state, incomingNumber);
+					switch (state) {
+						//挂断
+						case TelephonyManager.CALL_STATE_IDLE:
+							if (wm != null)
+								wm.removeView(tv);
+							break;
+						//接听
+						case TelephonyManager.CALL_STATE_OFFHOOK:
+							break;
+						//等待
+						case TelephonyManager.CALL_STATE_RINGING:
+							boolean phoneHeadOff = DataUtils.getDate(DataUtils.phoneHeadOff);
+							if(phoneHeadOff){
+								for(Phone p : DataUtils.black){
+									if(incomingNumber.equals(p.getPhone())){
+										stopCall();
+										return;
+									}
+								}
+							}
+							boolean isAlert = DataUtils.getDate(DataUtils.alertSwitch);
+							if(isAlert){
+								for(Phone p : DataUtils.white){
+									if(incomingNumber.equals(p.getPhone())){
+										showAlert(context, p.getRemark());
+										return;
+									}
+								}
+								if(!phoneHeadOff){
+									for(Phone p : DataUtils.black){
+										if(incomingNumber.equals(p.getPhone())){
+											showAlert(context, p.getRemark());
+											return;
+										}
+									}
+								}
+							}
+							break;
+					}
+				}
+			}, PhoneStateListener.LISTEN_CALL_STATE);
 		}
 	}
-	
-	PhoneStateListener listener = new PhoneStateListener() {
-		@Override
-		public void onCallStateChanged(int state, String incomingNumber) {
-			// state 当前状态 incomingNumber,貌似没有去电的API
-			super.onCallStateChanged(state, incomingNumber);
-			switch (state) {
-				//手机空闲了
-				case TelephonyManager.CALL_STATE_IDLE:
-					break;
-				//电话被挂起
-				case TelephonyManager.CALL_STATE_OFFHOOK:
-					break;
-				// 当电话呼入时
-				case TelephonyManager.CALL_STATE_RINGING:
 
-					if(fuckIt(incomingNumber)){
-						stopCall();
-					}else{
-						String i = DataUtils.black.toString();
-						System.out.print(i);
-					}
-				break;
-			}
-		}
-	};
+	void showAlert(Context context, String str){
+		tv = new TextView(context);
+		tv.setTextSize(25);
+		//得到连接
+		wm = (WindowManager) context.getApplicationContext()
+				.getSystemService(Context.WINDOW_SERVICE);
+		//构造显示参数
+		WindowManager.LayoutParams params = new WindowManager.LayoutParams();
+
+		//在所有窗体之上
+		params.type = WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY;
+
+		//设置失去焦点，不能被点击
+		params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+				| WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+		//高度宽度
+		params.width = WindowManager.LayoutParams.WRAP_CONTENT;
+		params.height = WindowManager.LayoutParams.WRAP_CONTENT;
+		//透明
+		params.format = PixelFormat.RGBA_8888;
+		//显示
+		tv.setText("安全提醒:" + str);
+		wm.addView(tv, params);
+	}
 	public boolean fuckIt(String number){
 		if(!DataUtils.getDate("phone_switch")){
 			return false;
