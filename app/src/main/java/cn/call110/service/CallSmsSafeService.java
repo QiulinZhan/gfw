@@ -152,7 +152,7 @@ public class CallSmsSafeService extends Service {
         tv = new TextView(mContext);
         tv.setTextSize(25);
         //得到连接
-        wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+        wm = (WindowManager) mContext.getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
         //构造显示参数
         WindowManager.LayoutParams params = new WindowManager.LayoutParams();
 
@@ -173,6 +173,6 @@ public class CallSmsSafeService extends Service {
     }
     public void removeWindow(){
         if(wm != null)
-            wm.removeViewImmediate(tv);
+            wm.removeView(tv);
     }
 }
