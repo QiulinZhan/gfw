@@ -41,11 +41,9 @@ public class SMSReceiver extends BroadcastReceiver {
             for (Object obj : messages) {
                 SmsMessage sms = SmsMessage.createFromPdu((byte[]) obj, format);
                 String sender = sms.getOriginatingAddress();
-                for(Phone p : DataUtils.black){
-                    if(sender.equals(p.getPhone())){
-                        abortBroadcast();
-                    }
-                }
+                DataUtils.black.stream().filter(p -> sender.equals(p.getPhone())).forEach(p -> {
+                    abortBroadcast();
+                });
             }
         }
     }

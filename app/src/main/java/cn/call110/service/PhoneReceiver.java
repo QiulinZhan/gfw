@@ -27,8 +27,10 @@ public class PhoneReceiver extends BroadcastReceiver {
     private static TelephonyManager manager;
 	private static WindowManager wm;
 	private static TextView tv;
+	private static Context mContext = null;
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		mContext = context.getApplicationContext();
 		if (intent.getAction().equals(Intent.ACTION_NEW_OUTGOING_CALL)) {
 			// 如果是去电（拨出）
 		} else {
@@ -43,8 +45,9 @@ public class PhoneReceiver extends BroadcastReceiver {
 					switch (state) {
 						//挂断
 						case TelephonyManager.CALL_STATE_IDLE:
-							if (wm != null)
-								wm.removeView(tv);
+							try{
+								removeWindow();
+							}catch (Exception e){}
 							break;
 						//接听
 						case TelephonyManager.CALL_STATE_OFFHOOK:
@@ -64,14 +67,14 @@ public class PhoneReceiver extends BroadcastReceiver {
 							if(isAlert){
 								for(Phone p : DataUtils.white){
 									if(incomingNumber.equals(p.getPhone())){
-										showAlert(context, p.getRemark());
+										showWindow(p.getRemark());
 										return;
 									}
 								}
 								if(!phoneHeadOff){
 									for(Phone p : DataUtils.black){
 										if(incomingNumber.equals(p.getPhone())){
-											showAlert(context, p.getRemark());
+											showWindow(p.getRemark());
 											return;
 										}
 									}
@@ -84,12 +87,25 @@ public class PhoneReceiver extends BroadcastReceiver {
 		}
 	}
 
-	void showAlert(Context context, String str){
-		tv = new TextView(context);
+	public void stopCall() {
+        try {
+            Method getITelephonyMethod = TelephonyManager.class
+                    .getDeclaredMethod("getITelephony", (Class[]) null);
+            getITelephonyMethod.setAccessible(true);
+            ITelephony telephony = (ITelephony) getITelephonyMethod.invoke(manager,
+                    (Object[]) null);
+            // 拒接来电
+            telephony.endCall();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+	}
+
+	public void showWindow(String str){
+		tv = new TextView(mContext);
 		tv.setTextSize(25);
 		//得到连接
-		wm = (WindowManager) context.getApplicationContext()
-				.getSystemService(Context.WINDOW_SERVICE);
+		wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
 		//构造显示参数
 		WindowManager.LayoutParams params = new WindowManager.LayoutParams();
 
@@ -108,27 +124,8 @@ public class PhoneReceiver extends BroadcastReceiver {
 		tv.setText("安全提醒:" + str);
 		wm.addView(tv, params);
 	}
-	public boolean fuckIt(String number){
-		if(!DataUtils.getDate("phone_switch")){
-			return false;
-		}
-		for(Phone p : DataUtils.black){
-			if(number.equals(p.getPhone()))
-				return true;
-		}
-		return false;
-	}
-	public void stopCall() {
-        try {
-            Method getITelephonyMethod = TelephonyManager.class
-                    .getDeclaredMethod("getITelephony", (Class[]) null);
-            getITelephonyMethod.setAccessible(true);
-            ITelephony telephony = (ITelephony) getITelephonyMethod.invoke(manager,
-                    (Object[]) null);
-            // 拒接来电
-            telephony.endCall();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+	public void removeWindow(){
+		if(wm != null)
+		wm.removeViewImmediate(tv);
 	}
 }

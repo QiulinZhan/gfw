@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS"/>
     <uses-permission android:name="android.permission.READ_SMS"/>
     <uses-permission android:name="android.permission.BROADCAST_SMS"/>
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.WRITE_SMS" />
     <!-- 授予程序接收短信的权限 -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-permission android:name="android.permission.CALL_PHONE"/>
@@ -33,18 +35,20 @@
             android:screenOrientation="portrait" />
         <activity android:name=".ui.SettingActivity"></activity>
         <!-- 拨打电话触发的广播 -->
-        <receiver android:name=".service.PhoneReceiver">
-            <intent-filter android:priority="1000">
-                <action android:name="android.intent.action.PHONE_STATE"/>
-                <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
-            </intent-filter>
-        </receiver>
+        <!--<receiver android:name=".service.PhoneReceiver">-->
+            <!--<intent-filter android:priority="1000">-->
+                <!--<action android:name="android.intent.action.PHONE_STATE"/>-->
+                <!--<action android:name="android.intent.action.NEW_OUTGOING_CALL" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
         <!-- 接收短信 -->
         <receiver android:name=".receiver.SMSReceiver" >
             <intent-filter android:priority="1000" >
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
+
+        <service android:name=".service.CallSmsSafeService" />
     </application>
 
 </manifest>
