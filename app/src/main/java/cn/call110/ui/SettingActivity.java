@@ -28,7 +28,6 @@ public class SettingActivity extends AppCompatActivity {
     Switch phoneSwitch;
     Switch smsSwitch;
     Switch alertSwitch;
-    Intent smsService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +68,6 @@ public class SettingActivity extends AppCompatActivity {
                 DataUtils.saveDate(DataUtils.smsHeadOff, false);
             }
         });
-        smsService = new Intent(this, CallSmsSafeService.class);
 //        phoneSwitch.setOnClickListener(e -> {
 //            DataUtils.saveDate("phone_switch", !phoneSwitch.isChecked());
 //        });
@@ -88,78 +86,81 @@ public class SettingActivity extends AppCompatActivity {
         SettingActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 
-    @NeedsPermission({Manifest.permission.PROCESS_OUTGOING_CALLS, Manifest.permission.CALL_PHONE})
+    @NeedsPermission({Manifest.permission.PROCESS_OUTGOING_CALLS})
     void setPhone() {
         change(SwitchType.PHONE, true);
-        Toast.makeText(this, "已开启拦截服务", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "已开启拦截服务", Toast.LENGTH_SHORT).show();
     }
 
-    @OnShowRationale({Manifest.permission.PROCESS_OUTGOING_CALLS, Manifest.permission.CALL_PHONE})
+    @OnShowRationale({Manifest.permission.PROCESS_OUTGOING_CALLS})
     void requestPhone(PermissionRequest request) {
         showRationaleDialog(R.string.phone_service, request);
-        Toast.makeText(this, "请求电话", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "请求电话", Toast.LENGTH_SHORT).show();
     }
 
-    @OnPermissionDenied({Manifest.permission.PROCESS_OUTGOING_CALLS, Manifest.permission.CALL_PHONE})
+    @OnPermissionDenied({Manifest.permission.PROCESS_OUTGOING_CALLS})
     void phoneDenied() {
         change(SwitchType.PHONE, false);
-        Toast.makeText(this, "电话关闭", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "电话关闭", Toast.LENGTH_SHORT).show();
     }
 
-    @OnNeverAskAgain({Manifest.permission.PROCESS_OUTGOING_CALLS, Manifest.permission.CALL_PHONE})
+    @OnNeverAskAgain({Manifest.permission.PROCESS_OUTGOING_CALLS})
     void phoneNotAsk() {
-        Toast.makeText(this, "电话不在询问", Toast.LENGTH_SHORT).show();
+        change(SwitchType.PHONE, true);
+//        Toast.makeText(this, "电话不在询问", Toast.LENGTH_SHORT).show();
     }
 
     @NeedsPermission(Manifest.permission.SYSTEM_ALERT_WINDOW)
     void setAlert() {
         change(SwitchType.ALERT, true);
-        Toast.makeText(this, "开启弹窗", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "开启弹窗", Toast.LENGTH_SHORT).show();
     }
 
     @OnShowRationale(Manifest.permission.SYSTEM_ALERT_WINDOW)
     void requestAlert(PermissionRequest request) {
         showRationaleDialog(R.string.phone_service, request);
-        Toast.makeText(this, "请求弹窗", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "请求弹窗", Toast.LENGTH_SHORT).show();
     }
 
     @OnPermissionDenied(Manifest.permission.SYSTEM_ALERT_WINDOW)
     void alertDenied() {
         change(SwitchType.ALERT, false);
-        Toast.makeText(this, "弹窗取消", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "弹窗取消", Toast.LENGTH_SHORT).show();
     }
 
     @OnNeverAskAgain(Manifest.permission.SYSTEM_ALERT_WINDOW)
     void alertNotAsk() {
-        Toast.makeText(this, "弹窗不在询问", Toast.LENGTH_SHORT).show();
+        change(SwitchType.ALERT, true);
     }
 
-    @NeedsPermission({Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS, Manifest.permission.BROADCAST_SMS, Manifest.permission.SEND_SMS
-    })
+
+//    @NeedsPermission({"android.permission.WRITE_SMS", Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS, Manifest.permission.BROADCAST_SMS})
+    @NeedsPermission({Manifest.permission.READ_SMS, "android.permission.WRITE_SMS", Manifest.permission.RECEIVE_SMS, Manifest.permission.BROADCAST_SMS})
     void setSms() {
         change(SwitchType.SMS, true);
-        startService(smsService);
-        Toast.makeText(this, "短信开启", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "短信开启", Toast.LENGTH_SHORT).show();
     }
 
-    @OnShowRationale({Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS, Manifest.permission.BROADCAST_SMS, Manifest.permission.SEND_SMS})
+//    @OnShowRationale({"android.permission.WRITE_SMS", Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS, Manifest.permission.BROADCAST_SMS})
+    @OnShowRationale({Manifest.permission.READ_SMS, "android.permission.WRITE_SMS", Manifest.permission.RECEIVE_SMS, Manifest.permission.BROADCAST_SMS})
     void requestSms(PermissionRequest request) {
         showRationaleDialog(R.string.phone_service, request);
-        Toast.makeText(this, "短信服务说明", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "短信服务说明", Toast.LENGTH_SHORT).show();
     }
 
-    @OnPermissionDenied({Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS, Manifest.permission.BROADCAST_SMS, Manifest.permission.SEND_SMS})
+//    @OnPermissionDenied({"android.permission.WRITE_SMS", Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS, Manifest.permission.BROADCAST_SMS})
+    @OnPermissionDenied({Manifest.permission.READ_SMS, "android.permission.WRITE_SMS", Manifest.permission.RECEIVE_SMS, Manifest.permission.BROADCAST_SMS})
     void smsDenied() {
         change(SwitchType.SMS, false);
-        stopService(smsService);
-        Toast.makeText(this, "短信取消", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "短信取消", Toast.LENGTH_SHORT).show();
     }
 
-    @OnNeverAskAgain({Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS, Manifest.permission.BROADCAST_SMS, Manifest.permission.SEND_SMS})
+//    @OnNeverAskAgain({"android.permission.WRITE_SMS", Manifest.per
+// .mission.RECEIVE_SMS, Manifest.permission.READ_SMS, Manifest.permission.BROADCAST_SMS})
+    @OnNeverAskAgain({Manifest.permission.READ_SMS, "android.permission.WRITE_SMS", Manifest.permission.RECEIVE_SMS, Manifest.permission.BROADCAST_SMS})
     void smsNotAsk() {
         change(SwitchType.SMS, true);
-        startService(smsService);
-        Toast.makeText(this, "短信不在询问", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "短信不在询问", Toast.LENGTH_SHORT).show();
     }
 
     private void showRationaleDialog(@StringRes int messageResId, final PermissionRequest request) {

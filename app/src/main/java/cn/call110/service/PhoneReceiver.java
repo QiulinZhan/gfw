@@ -41,13 +41,11 @@ public class PhoneReceiver extends BroadcastReceiver {
 				@Override
 				public void onCallStateChanged(int state, String incomingNumber) {
 					// state 当前状态 incomingNumber,貌似没有去电的API
+					removeWindow();
 					super.onCallStateChanged(state, incomingNumber);
 					switch (state) {
 						//挂断
 						case TelephonyManager.CALL_STATE_IDLE:
-							try{
-								removeWindow();
-							}catch (Exception e){}
 							break;
 						//接听
 						case TelephonyManager.CALL_STATE_OFFHOOK:
@@ -125,7 +123,7 @@ public class PhoneReceiver extends BroadcastReceiver {
 		wm.addView(tv, params);
 	}
 	public void removeWindow(){
-		if(wm != null)
-		wm.removeViewImmediate(tv);
+		if(wm != null && tv != null)
+			wm.removeViewImmediate(tv);
 	}
 }
