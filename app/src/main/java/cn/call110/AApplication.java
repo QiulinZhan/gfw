@@ -4,6 +4,7 @@ import android.app.Application;
 import java.util.concurrent.TimeUnit;
 import cn.call110.utils.DataUtils;
 import cn.call110.utils.http.OkHttpUtils;
+import io.realm.Realm;
 import okhttp3.OkHttpClient;
 
 /**
@@ -23,5 +24,6 @@ public class AApplication extends Application {
                 .build();
 
         OkHttpUtils.initClient(okHttpClient);
+        Realm.init(this);
     }
 }

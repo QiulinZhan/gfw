@@ -21,16 +21,9 @@ public class WelcomeActivity extends Activity {
         public void handleMessage(Message msg) {
             if(msg.what == 1314){
                 timer.cancel();
-//                com.example.qiulin.traffic.beans.vo.User user = DataUtil.getDate(WelcomeActivity.this);
-//                if(null != user){
-                    Intent intent = new Intent(WelcomeActivity.this,
-                            HomeActivity.class);
-                    startActivity(intent);
-//                }else{
-//                    Intent intent = new Intent(WelcomeActivity.this,
-//                            LoginActivity.class);
-//                    startActivity(intent);
-//                }
+                Intent intent = new Intent(WelcomeActivity.this,
+                        HomeActivity.class);
+                startActivity(intent);
                 finish();
             }
         }
@@ -45,6 +38,7 @@ public class WelcomeActivity extends Activity {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
+
                 handler.sendEmptyMessage(1314);
             }
         },2000,5000);

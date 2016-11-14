@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.BROADCAST_SMS"/>
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.WRITE_SMS" />
-    <!-- 授予程序接收短信的权限 -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-permission android:name="android.permission.CALL_PHONE"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
@@ -55,7 +54,7 @@
         <service android:name=".service.PhoneService" />
 
         <receiver android:name=".receiver.PhoneReceiver" >
-            <intent-filter>
+            <intent-filter>{Manifest.permission.PROCESS_OUTGOING_CALLS, Manifest.permission.CALL_PHONE, Manifest.permission.READ_PHONE_STATE}
                 <action android:name="android.intent.action.PHONE_STATE" />
                 <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
             </intent-filter>

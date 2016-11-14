@@ -86,25 +86,25 @@ public class SettingActivity extends AppCompatActivity {
         SettingActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 
-    @NeedsPermission({Manifest.permission.PROCESS_OUTGOING_CALLS})
+    @NeedsPermission({Manifest.permission.PROCESS_OUTGOING_CALLS, Manifest.permission.CALL_PHONE, Manifest.permission.READ_PHONE_STATE})
     void setPhone() {
         change(SwitchType.PHONE, true);
 //        Toast.makeText(this, "已开启拦截服务", Toast.LENGTH_SHORT).show();
     }
 
-    @OnShowRationale({Manifest.permission.PROCESS_OUTGOING_CALLS})
+    @OnShowRationale({Manifest.permission.PROCESS_OUTGOING_CALLS, Manifest.permission.CALL_PHONE, Manifest.permission.READ_PHONE_STATE})
     void requestPhone(PermissionRequest request) {
         showRationaleDialog(R.string.phone_service, request);
 //        Toast.makeText(this, "请求电话", Toast.LENGTH_SHORT).show();
     }
 
-    @OnPermissionDenied({Manifest.permission.PROCESS_OUTGOING_CALLS})
+    @OnPermissionDenied({Manifest.permission.PROCESS_OUTGOING_CALLS, Manifest.permission.CALL_PHONE, Manifest.permission.READ_PHONE_STATE})
     void phoneDenied() {
         change(SwitchType.PHONE, false);
 //        Toast.makeText(this, "电话关闭", Toast.LENGTH_SHORT).show();
     }
 
-    @OnNeverAskAgain({Manifest.permission.PROCESS_OUTGOING_CALLS})
+    @OnNeverAskAgain({Manifest.permission.PROCESS_OUTGOING_CALLS, Manifest.permission.CALL_PHONE, Manifest.permission.READ_PHONE_STATE})
     void phoneNotAsk() {
         change(SwitchType.PHONE, true);
 //        Toast.makeText(this, "电话不在询问", Toast.LENGTH_SHORT).show();
