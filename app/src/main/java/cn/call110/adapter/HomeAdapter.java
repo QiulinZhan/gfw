@@ -1,6 +1,11 @@
 package cn.call110.adapter;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.shapes.Shape;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +63,8 @@ public class HomeAdapter extends BaseAdapter {
         view.setTag(item);
         Picasso.with(context).load(item.getIcon()).into(imageView);
         textView.setText(item.getTitle());
-        view.findViewById(R.id.contentView).setBackgroundResource(item.getBackgroundColor());
+        GradientDrawable gd = (GradientDrawable) view.getBackground();
+        gd.setColor(Color.parseColor(item.getBackgroundColor()));
         return view;
     }
 }

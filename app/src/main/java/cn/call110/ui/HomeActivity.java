@@ -1,6 +1,7 @@
 package cn.call110.ui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -11,13 +12,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bigkoo.convenientbanner.ConvenientBanner;
+import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
+import com.bigkoo.convenientbanner.holder.Holder;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import cn.call110.R;
@@ -30,8 +37,9 @@ public class HomeActivity extends AppCompatActivity {
     private GridView mGridView;
     private HomeAdapter mAdapter;
     private List<HomeMenuItem> list;
-    private int[] colors = {R.color.tel, R.color.msm, R.color.query, R.color.advice};
+    private String[] colors = {"#ffae42", "#1fb991", "#fb6d50", "#009ff2"};
     private int[] icons = {R.mipmap.icon_tel, R.mipmap.icon_msm, R.mipmap.icon_query, R.mipmap.icon_advice};
+    private ConvenientBanner banner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,8 +65,38 @@ public class HomeActivity extends AppCompatActivity {
             return false;
         });
 
-    }
+        banner = (ConvenientBanner) findViewById(R.id.banner);
+        //自定义你的Holder，实现更多复杂的界面，不一定是图片翻页，其他任何控件翻页亦可。
+        banner.setPages(
+                new CBViewHolderCreator<LocalImageHolderView>() {
+                    @Override
+                    public LocalImageHolderView createHolder() {
+                        return new LocalImageHolderView();
+                    }
+                }, Arrays.asList(R.mipmap.banner_1_1, R.mipmap.banner_1_1))
+                //设置两个点图片作为翻页指示器，不设置则没有指示器，可以根据自己需求自行配合自己的指示器,不需要圆点指示器可用不设
+                .setPageIndicator(new int[]{R.mipmap.ic_page_indicator, R.mipmap.ic_page_indicator_focused})
+                //设置指示器的方向
+                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT);
+        //设置翻页的效果，不需要翻页效果可用不设
+        //.setPageTransformer(Transformer.DefaultTransformer);    集成特效之后会有白屏现象，新版已经分离，如果要集成特效的例子可以看Demo的点击响应。
+//        convenientBanner.setManualPageable(false);//设置不能手动影响
 
+    }
+    public class LocalImageHolderView implements Holder<Integer> {
+        private ImageView imageView;
+        @Override
+        public View createView(Context context) {
+            imageView = new ImageView(context);
+            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+            return imageView;
+        }
+
+        @Override
+        public void UpdateUI(Context context, final int position, Integer data) {
+            imageView.setImageResource(data);
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -79,6 +117,9 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        final float scale = getResources().getDisplayMetrics().density;
+
+        float i = (banner.getWidth() / scale + 0.5f);
         // 过滤按键动作
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
             moveTaskToBack(true);

@@ -6,16 +6,18 @@
     android:layout_height="match_parent"
     tools:context="cn.call110.ui.HomeActivity">
     <include layout="@layout/toolbar" />
-    <ImageView
+
+    <com.bigkoo.convenientbanner.ConvenientBanner
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/banner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/grid"
-        android:scaleType="centerCrop"
+        android:layout_height="225dp"
+        app:canLoop="true"
         android:layout_below="@+id/toolbar"
-        android:paddingBottom="20dp"
-        android:src="@mipmap/banner_1_1"
-        />
+        android:background="@color/blue"
+        android:layout_marginTop="0dp" />
+
+    <!--</com.bigkoo.convenientbanner.ConvenientBanner>-->
     <GridView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/grid"
         android:layout_width="wrap_content"
@@ -25,7 +27,6 @@
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginBottom="20dp"
-        android:horizontalSpacing="15dp"
-        >
+        android:horizontalSpacing="15dp">
     </GridView>
 </RelativeLayout>

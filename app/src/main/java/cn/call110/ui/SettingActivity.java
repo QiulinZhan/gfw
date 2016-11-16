@@ -121,7 +121,7 @@ public class SettingActivity extends AppCompatActivity {
 
     @OnShowRationale(Manifest.permission.SYSTEM_ALERT_WINDOW)
     void requestAlert(PermissionRequest request) {
-        showRationaleDialog(R.string.phone_service, request);
+        showRationaleDialog(R.string.alert_service, request);
 //        Toast.makeText(this, "请求弹窗", Toast.LENGTH_SHORT).show();
     }
 
@@ -147,7 +147,7 @@ public class SettingActivity extends AppCompatActivity {
 //    @OnShowRationale({"android.permission.WRITE_SMS", Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS, Manifest.permission.BROADCAST_SMS})
     @OnShowRationale({Manifest.permission.READ_SMS, "android.permission.WRITE_SMS", Manifest.permission.RECEIVE_SMS, Manifest.permission.BROADCAST_SMS})
     void requestSms(PermissionRequest request) {
-        showRationaleDialog(R.string.phone_service, request);
+        showRationaleDialog(R.string.sms_service, request);
 //        Toast.makeText(this, "短信服务说明", Toast.LENGTH_SHORT).show();
     }
 

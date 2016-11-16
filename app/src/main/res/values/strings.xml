@@ -6,4 +6,6 @@
     <string name="home_menu6">意见建议</string>
     <string name="setting">设置</string>
     <string name="phone_service">拦截诈骗电话服务</string>
+    <string name="sms_service">拦截诈骗短信服务</string>
+    <string name="alert_service">可疑号码提示服务</string>
 </resources>
