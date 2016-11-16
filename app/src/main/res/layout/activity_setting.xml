@@ -52,12 +52,12 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="@color/colorPrimary"
+        android:background="@color/material_blue_500"
         android:layout_below="@id/smsSwitch"
         android:layout_marginTop="20dp"
         android:id="@+id/update"
         android:text="更新数据"
-        android:textColor="@color/windowBackgroundColor"
+        android:textColor="@color/background"
         android:textSize="18sp"
         />
 

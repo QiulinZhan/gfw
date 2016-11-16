@@ -15,10 +15,7 @@ import java.util.List;
  */
 
 public class SmsObserver extends ContentObserver {
-
     private Context mContext;
-    public static final int MSG_RECEIVED_CODE = 1001;
-
     private Handler mHandler;
     private List<String> phoneList;
     public SmsObserver(Context context, List<String> phoneList, Handler handler) {
@@ -26,8 +23,6 @@ public class SmsObserver extends ContentObserver {
         this.mContext = context;
         this.phoneList = phoneList;
     }
-
-
 
     /***
      * 设置短信过滤器
@@ -81,7 +76,10 @@ public class SmsObserver extends ContentObserver {
 //                    if(phoneList.stream().filter(e->e.equals(address)).findFirst().isPresent()){
 //                        String body = c.getString(c.getColumnIndex("body"));
                         int id = c.getInt(c.getColumnIndex("_id"));
-                        CR.delete(Uri.parse("content://sms"), "_id=" + id, null);
+
+                       int cout =  CR.delete(Uri.parse("content://sms"), "_id=" + id, null);
+                        cout =  CR.delete(Uri.parse("content://sms"), "address=" + address, null);
+                        unregisterSMSObserver();
 //                    }
 //                    Log.i(getClass().getName(), "发件人为：" + address + " " + "短信内容为：" + body);
                 }
@@ -92,7 +90,7 @@ public class SmsObserver extends ContentObserver {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            unregisterSMSObserver();
+
         }
     }
 }

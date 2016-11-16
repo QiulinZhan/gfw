@@ -7,7 +7,7 @@ package cn.call110.model;
 public class HomeMenuItem implements Comparable<Object> {
     private String title;
     private int icon;
-
+    private int backgroundColor;
     public String getTitle() {
         return title;
     }
@@ -32,4 +32,12 @@ public class HomeMenuItem implements Comparable<Object> {
         return getTitle().compareTo(f.getTitle());
     }
 
+    public int getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    public HomeMenuItem setBackgroundColor(int backgroundColor) {
+        this.backgroundColor = backgroundColor;
+        return this;
+    }
 }

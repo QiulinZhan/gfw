@@ -38,11 +38,9 @@ public class WelcomeActivity extends Activity {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-
                 handler.sendEmptyMessage(1314);
             }
         },2000,5000);
-
     }
     @Override
     protected void onDestroy(){

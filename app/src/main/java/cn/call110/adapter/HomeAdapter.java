@@ -51,12 +51,14 @@ public class HomeAdapter extends BaseAdapter {
         } else {
             view = convertView;
         }
+
         ImageView imageView = (ImageView) view.findViewById(R.id.icon);
         TextView textView = (TextView) view.findViewById(R.id.title);
         HomeMenuItem item = list.get(position);
         view.setTag(item);
         Picasso.with(context).load(item.getIcon()).into(imageView);
         textView.setText(item.getTitle());
+        view.findViewById(R.id.contentView).setBackgroundResource(item.getBackgroundColor());
         return view;
     }
 }
