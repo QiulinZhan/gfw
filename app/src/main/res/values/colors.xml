@@ -5,7 +5,8 @@
     <color name="msm">#1fb991</color>
     <color name="query">#fb6d50</color>
     <color name="advice">#009ff2</color>
-
+    <color name="textBack">#70252530</color>
+    <color name="bannerText">#EEDADADA</color>
     <color name="colorPrimary">#252530</color>
     <color name="colorPrimaryDark">#252530</color>
     <color name="background">#ECECEC</color>

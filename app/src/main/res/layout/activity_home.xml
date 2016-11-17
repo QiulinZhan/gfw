@@ -14,11 +14,9 @@
         android:layout_height="225dp"
         app:canLoop="true"
         android:layout_below="@+id/toolbar"
-        android:background="@color/blue"
         android:layout_marginTop="0dp" />
 
-    <!--</com.bigkoo.convenientbanner.ConvenientBanner>-->
-    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+    <GridView
         android:id="@+id/grid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,7 +24,17 @@
         android:layout_alignParentBottom="true"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginBottom="20dp"
-        android:horizontalSpacing="15dp">
-    </GridView>
+        android:layout_marginBottom="10dp"
+        android:horizontalSpacing="15dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/banner"
+        android:layout_above="@id/grid"
+        android:background="@color/blue"
+        android:scrollbars="vertical"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"/>
 </RelativeLayout>

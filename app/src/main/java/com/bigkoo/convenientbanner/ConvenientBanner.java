@@ -168,12 +168,10 @@ public class ConvenientBanner<T> extends LinearLayout {
             mPointViews.add(pointView);
             loPageTurningPoint.addView(pointView);
         }
-        pageChangeListener = new CBPageChangeListener(mPointViews,
-                page_indicatorId);
+        pageChangeListener = new CBPageChangeListener(mPointViews, page_indicatorId);
         viewPager.setOnPageChangeListener(pageChangeListener);
         pageChangeListener.onPageSelected(viewPager.getRealItem());
         if(onPageChangeListener != null)pageChangeListener.setOnPageChangeListener(onPageChangeListener);
-
         return this;
     }
 
