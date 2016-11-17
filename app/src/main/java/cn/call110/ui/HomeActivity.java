@@ -3,15 +3,11 @@ package cn.call110.ui;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -20,29 +16,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
-import com.daimajia.swipe.util.Attributes;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import cn.call110.R;
 import cn.call110.adapter.HomeAdapter;
-import cn.call110.adapter.RecyclerViewAdapter;
 import cn.call110.model.Banner;
 import cn.call110.model.HomeMenuItem;
 import cn.call110.utils.IntentUtils;
-import jp.wasabeef.recyclerview.animators.FadeInLeftAnimator;
-
 
 public class HomeActivity extends AppCompatActivity {
     private GridView mGridView;
@@ -51,9 +38,7 @@ public class HomeActivity extends AppCompatActivity {
     private String[] colors = {"#ffae42", "#1fb991", "#fb6d50", "#009ff2"};
     private int[] icons = {R.mipmap.icon_tel, R.mipmap.icon_msm, R.mipmap.icon_query, R.mipmap.icon_advice};
     private ConvenientBanner banner;
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter rAdapter;
-    private ArrayList<String> mDataSet;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,21 +83,6 @@ public class HomeActivity extends AppCompatActivity {
         //设置翻页的效果，不需要翻页效果可用不设
         //.setPageTransformer(Transformer.DefaultTransformer);    集成特效之后会有白屏现象，新版已经分离，如果要集成特效的例子可以看Demo的点击响应。
 //        convenientBanner.setManualPageable(false);//设置不能手动影响
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        // Layout Managers:
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        // Item Decorator:
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
-        recyclerView.setItemAnimator(new FadeInLeftAnimator());
-        String[] adapterData = new String[]{"Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"};
-        mDataSet = new ArrayList<String>(Arrays.asList(adapterData));
-        rAdapter = new RecyclerViewAdapter(this, mDataSet);
-        ((RecyclerViewAdapter) rAdapter).setMode(Attributes.Mode.Single);
-        recyclerView.setAdapter(rAdapter);
-
-        /* Listeners */
-//        recyclerView.setOnScrollListener(onScrollListener);
     }
 
     public class LocalImageHolderView implements Holder<Banner> {
@@ -153,7 +123,6 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         final float scale = getResources().getDisplayMetrics().density;
-
         float i = (banner.getWidth() / scale + 0.5f);
         // 过滤按键动作
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
