@@ -11,7 +11,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/banner"
         android:layout_width="match_parent"
-        android:layout_height="225dp"
+        android:layout_height="225.5dp"
         app:canLoop="true"
         android:layout_below="@+id/toolbar"
         android:layout_marginTop="0dp" />
@@ -27,14 +27,81 @@
         android:layout_marginBottom="10dp"
         android:horizontalSpacing="15dp" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/banner"
         android:layout_above="@id/grid"
         android:background="@color/blue"
-        android:scrollbars="vertical"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginTop="35dp"
+        android:layout_marginBottom="10dp"
+        android:scrollbars="none">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            >
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@color/material_green_A200"
+                android:paddingLeft="5dp"
+
+                >
+
+                <!--<ImageView-->
+                    <!--android:id="@+id/img1"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:src="@mipmap/banner_2_01"-->
+                    <!--android:scaleType="fitCenter"-->
+                    <!--android:background="@color/color_red"-->
+                    <!--android:paddingTop="0dp"-->
+                    <!--android:paddingBottom="47dp"-->
+                    <!--/>-->
+                <RelativeLayout
+                    android:id="@+id/img1"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/banner_2_01"
+                    android:background="@color/color_red"
+                    android:layout_marginTop="10dp"
+                    android:paddingBottom="47dp"
+                    >
+                </RelativeLayout>
+
+                <!--<TextView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="20dp"-->
+                    <!--android:layout_below="@id/img1"-->
+                    <!--android:paddingTop="10dp"-->
+                    <!--android:textColor="@color/text"-->
+                    <!--android:textSize="12dp"-->
+                    <!--android:text="2016" />-->
+
+                <!--<TextView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textColor="@color/color_gray_low"-->
+                    <!--android:paddingBottom="10dp"-->
+                    <!--android:textSize="10dp"-->
+                    <!--android:text="吉林省公安"-->
+                    <!--/>-->
+            </RelativeLayout>
+
+            <!--<ImageView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:src="@mipmap/banner_2_02"-->
+                <!--android:scaleType="center"-->
+                <!--android:layout_marginLeft="5dp"/>-->
+            <!--<ImageView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:src="@mipmap/banner_2_03"-->
+                <!--android:scaleType="center"-->
+                <!--android:layout_marginLeft="5dp"/>-->
+        </LinearLayout>
+    </HorizontalScrollView>
+
 </RelativeLayout>

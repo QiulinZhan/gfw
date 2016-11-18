@@ -18,11 +18,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:textSize="12sp"
+        android:textSize="12dp"
         android:clickable="false"
         android:textColor="@color/text"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="5dp"
+        android:paddingBottom="5dp"
         />
     <!--android:background="@drawable/menuitemshape"-->
 </cn.call110.layout.SquareLayout>

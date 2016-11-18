@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textColor="@color/background"
-        android:textSize="15sp"
+        android:textSize="15dp"
         android:id="@+id/title" />
 
 </android.support.v7.widget.Toolbar>

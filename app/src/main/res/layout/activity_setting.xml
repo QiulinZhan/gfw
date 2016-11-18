@@ -15,7 +15,7 @@
         android:layout_height="60dp"
         android:id="@+id/alertSwitch"
         android:text="来电提示"
-        android:textSize="18sp"
+        android:textSize="18dp"
         android:textStyle="normal"
         android:textColor="@color/secondary"
         android:gravity="center_vertical"
@@ -29,7 +29,7 @@
         android:layout_height="60dp"
         android:id="@+id/phoneSwitch"
         android:text="电话拦截"
-        android:textSize="18sp"
+        android:textSize="18dp"
         android:textStyle="normal"
         android:textColor="@color/secondary"
         android:gravity="center_vertical"
@@ -43,7 +43,7 @@
         android:layout_height="60dp"
         android:id="@+id/smsSwitch"
         android:text="短信拦截"
-        android:textSize="18sp"
+        android:textSize="18dp"
         android:textStyle="normal"
         android:textColor="@color/secondary"
         android:gravity="center_vertical"
@@ -58,7 +58,7 @@
         android:id="@+id/update"
         android:text="更新数据"
         android:textColor="@color/background"
-        android:textSize="18sp"
+        android:textSize="18dp"
         />
 
 </RelativeLayout>
