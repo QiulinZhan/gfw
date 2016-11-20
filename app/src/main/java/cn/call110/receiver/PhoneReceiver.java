@@ -9,10 +9,14 @@ import android.telephony.TelephonyManager;
 import com.android.internal.telephony.ITelephony;
 
 import java.lang.reflect.Method;
+import java.util.Date;
 
+import cn.call110.model.FraudPhone;
 import cn.call110.model.Phone;
 import cn.call110.service.PhoneService;
 import cn.call110.utils.DataUtils;
+import cn.call110.utils.DateUtils;
+import io.realm.Realm;
 
 public class PhoneReceiver extends BroadcastReceiver {
 	private String phoneNumber = "";
@@ -58,7 +62,7 @@ public class PhoneReceiver extends BroadcastReceiver {
 					if(phoneHeadOff){
 						for(Phone p : DataUtils.black){
 							if(incomingNumber.equals(p.getPhone())){
-								stopCall();
+								stopCall(incomingNumber, p.getRemark());
 								return;
 							}
 						}
@@ -115,7 +119,7 @@ public class PhoneReceiver extends BroadcastReceiver {
 		return phoneNumber;
 	}
 
-	public void stopCall() {
+	public void stopCall(String phone, String remark) {
 		try {
 			Method getITelephonyMethod = TelephonyManager.class
 					.getDeclaredMethod("getITelephony", (Class[]) null);
@@ -124,6 +128,14 @@ public class PhoneReceiver extends BroadcastReceiver {
 					(Object[]) null);
 			// 拒接来电
 			telephony.endCall();
+			Realm realm = Realm.getDefaultInstance();
+			realm.executeTransaction(e -> {
+				FraudPhone fp = realm.createObject(FraudPhone.class);
+				fp.setPhone(phone);
+				fp.setCreateTime(DateUtils.formatDateTime(new Date()));
+				fp.setRemark(remark);
+			});
+			realm.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

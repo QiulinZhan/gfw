@@ -8,22 +8,12 @@ import io.realm.annotations.RealmClass;
  * Created by zhan on 2016/11/14.
  */
 @RealmClass
-public class Contact extends RealmObject {
-    @PrimaryKey
-    private Long id;
+public class FraudPhone extends RealmObject {
     private String phone;
     private String city;
     private String remark;
-    private Long createTime;
+    private String createTime;
     private Integer type;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getPhone() {
         return phone;
@@ -49,11 +39,11 @@ public class Contact extends RealmObject {
         this.remark = remark;
     }
 
-    public Long getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Long createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 

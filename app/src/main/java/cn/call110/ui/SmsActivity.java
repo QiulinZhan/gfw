@@ -1,7 +1,6 @@
 package cn.call110.ui;
 
 import android.Manifest;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -23,8 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.call110.R;
-import cn.call110.adapter.PhoneAdapter;
+import cn.call110.adapter.SmsAdapter;
 import cn.call110.model.FraudPhone;
+import cn.call110.model.FraudSms;
 import cn.call110.utils.DataUtils;
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -36,50 +36,38 @@ import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class SettingActivity extends AutoLayoutActivity {
-    private Switch phoneSwitch;
-    private Switch alertSwitch;
+public class SmsActivity extends AutoLayoutActivity {
+    private Switch smsSwitch;
     private SwipeMenuListView mListView;
-    private RealmResults<FraudPhone> dataList;
-    private PhoneAdapter madapter;
+    private RealmResults<FraudSms> dataList;
+    private SmsAdapter madapter;
     private Realm realm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setting);
+        setContentView(R.layout.activity_sms);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         TextView title = (TextView) toolbar.findViewById(R.id.title);
         toolbar.setTitle("");
-        title.setText(R.string.setting);
+        title.setText(R.string.sms_setting);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(e -> this.onBackPressed());
 
-        alertSwitch = (Switch) findViewById(R.id.alertSwitch);
-        alertSwitch.setChecked(DataUtils.getDate(DataUtils.alertSwitch));
-        alertSwitch.setOnCheckedChangeListener((e, v) -> {
+        smsSwitch = (Switch) findViewById(R.id.smsSwitch);
+        smsSwitch.setChecked(DataUtils.getDate(DataUtils.smsHeadOff));
+        smsSwitch.setOnCheckedChangeListener((e, v) -> {
             if(v){
-                SettingActivityPermissionsDispatcher.setAlertWithCheck(this);
+                SmsActivityPermissionsDispatcher.setSmsWithCheck(this);
             }else{
-                DataUtils.saveDate(DataUtils.alertSwitch, false);
+                DataUtils.saveDate(DataUtils.smsHeadOff, false);
             }
         });
-        phoneSwitch = (Switch) findViewById(R.id.phoneSwitch);
-        phoneSwitch.setChecked(DataUtils.getDate(DataUtils.phoneHeadOff));
-        phoneSwitch.setOnCheckedChangeListener((e, v) -> {
-            if(v){
-                SettingActivityPermissionsDispatcher.setPhoneWithCheck(this);
-            }else{
-                DataUtils.saveDate(DataUtils.phoneHeadOff, false);
-            }
-        });
-
         mListView = (SwipeMenuListView) findViewById(R.id.list);
         realm = Realm.getDefaultInstance();
-        dataList = realm.where(FraudPhone.class).findAll();
+        dataList = realm.where(FraudSms.class).findAll();
 
-
-        madapter = new PhoneAdapter(this, dataList);
+        madapter = new SmsAdapter(this, dataList);
         mListView.setAdapter(madapter);
         SwipeMenuCreator creator = new SwipeMenuCreator() {
             @Override
@@ -116,65 +104,40 @@ public class SettingActivity extends AutoLayoutActivity {
             }
         });
     }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        SettingActivityPermissionsDispatcher.onActivityResult(this, requestCode);
-    }
-    // 来电提示权限返回
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        SettingActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+        SmsActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 
-    @NeedsPermission({Manifest.permission.PROCESS_OUTGOING_CALLS, Manifest.permission.CALL_PHONE, Manifest.permission.READ_PHONE_STATE})
-    void setPhone() {
-        change(SwitchType.PHONE, true);
-//        Toast.makeText(this, "已开启拦截服务", Toast.LENGTH_SHORT).show();
+    //    @NeedsPermission({"android.permission.WRITE_SMS", Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS, Manifest.permission.BROADCAST_SMS})
+    @NeedsPermission({Manifest.permission.READ_SMS, "android.permission.WRITE_SMS", Manifest.permission.RECEIVE_SMS, Manifest.permission.BROADCAST_SMS})
+    void setSms() {
+        change(true);
+//        Toast.makeText(this, "短信开启", Toast.LENGTH_SHORT).show();
     }
 
-    @OnShowRationale({Manifest.permission.PROCESS_OUTGOING_CALLS, Manifest.permission.CALL_PHONE, Manifest.permission.READ_PHONE_STATE})
-    void requestPhone(PermissionRequest request) {
-        showRationaleDialog(R.string.phone_service, request);
-//        Toast.makeText(this, "请求电话", Toast.LENGTH_SHORT).show();
+    //    @OnShowRationale({"android.permission.WRITE_SMS", Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS, Manifest.permission.BROADCAST_SMS})
+    @OnShowRationale({Manifest.permission.READ_SMS, "android.permission.WRITE_SMS", Manifest.permission.RECEIVE_SMS, Manifest.permission.BROADCAST_SMS})
+    void requestSms(PermissionRequest request) {
+        showRationaleDialog(R.string.sms_service, request);
+//        Toast.makeText(this, "短信服务说明", Toast.LENGTH_SHORT).show();
     }
 
-    @OnPermissionDenied({Manifest.permission.PROCESS_OUTGOING_CALLS, Manifest.permission.CALL_PHONE, Manifest.permission.READ_PHONE_STATE})
-    void phoneDenied() {
-        change(SwitchType.PHONE, false);
-//        Toast.makeText(this, "电话关闭", Toast.LENGTH_SHORT).show();
+    //    @OnPermissionDenied({"android.permission.WRITE_SMS", Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS, Manifest.permission.BROADCAST_SMS})
+    @OnPermissionDenied({Manifest.permission.READ_SMS, "android.permission.WRITE_SMS", Manifest.permission.RECEIVE_SMS, Manifest.permission.BROADCAST_SMS})
+    void smsDenied() {
+        change(false);
+//        Toast.makeText(this, "短信取消", Toast.LENGTH_SHORT).show();
     }
 
-    @OnNeverAskAgain({Manifest.permission.PROCESS_OUTGOING_CALLS, Manifest.permission.CALL_PHONE, Manifest.permission.READ_PHONE_STATE})
-    void phoneNotAsk() {
-        change(SwitchType.PHONE, true);
-//        Toast.makeText(this, "电话不在询问", Toast.LENGTH_SHORT).show();
-    }
-
-    @NeedsPermission(Manifest.permission.SYSTEM_ALERT_WINDOW)
-    void setAlert() {
-        change(SwitchType.ALERT, true);
-//        Toast.makeText(this, "开启弹窗", Toast.LENGTH_SHORT).show();
-    }
-
-    @OnShowRationale(Manifest.permission.SYSTEM_ALERT_WINDOW)
-    void requestAlert(PermissionRequest request) {
-        showRationaleDialog(R.string.alert_service, request);
-//        Toast.makeText(this, "请求弹窗", Toast.LENGTH_SHORT).show();
-    }
-
-    @OnPermissionDenied(Manifest.permission.SYSTEM_ALERT_WINDOW)
-    void alertDenied() {
-        change(SwitchType.ALERT, false);
-//        Toast.makeText(this, "弹窗取消", Toast.LENGTH_SHORT).show();
-    }
-
-    @OnNeverAskAgain(Manifest.permission.SYSTEM_ALERT_WINDOW)
-    void alertNotAsk() {
-        change(SwitchType.ALERT, true);
+    //    @OnNeverAskAgain({"android.permission.WRITE_SMS", Manifest.per
+// .mission.RECEIVE_SMS, Manifest.permission.READ_SMS, Manifest.permission.BROADCAST_SMS})
+    @OnNeverAskAgain({Manifest.permission.READ_SMS, "android.permission.WRITE_SMS", Manifest.permission.RECEIVE_SMS, Manifest.permission.BROADCAST_SMS})
+    void smsNotAsk() {
+        change(true);
+//        Toast.makeText(this, "短信不在询问", Toast.LENGTH_SHORT).show();
     }
 
     private void showRationaleDialog(@StringRes int messageResId, final PermissionRequest request) {
@@ -186,26 +149,15 @@ public class SettingActivity extends AutoLayoutActivity {
                 .show();
     }
 
-    void change(SwitchType type, boolean value){
-        switch(type){
-            case PHONE:
-                phoneSwitch.setChecked(value);
-                DataUtils.saveDate(DataUtils.phoneHeadOff, value);
-                break;
-            default:
-                alertSwitch.setChecked(value);
-                DataUtils.saveDate(DataUtils.alertSwitch, value);
-                break;
-        }
+    void change(boolean value){
+        smsSwitch.setChecked(value);
+        DataUtils.saveDate(DataUtils.smsHeadOff, value);
     }
-    private enum SwitchType{
-        PHONE, ALERT
-    }
+
     private int dp2px(int dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
                 getResources().getDisplayMetrics());
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();

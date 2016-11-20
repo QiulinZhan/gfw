@@ -9,7 +9,9 @@
     <color name="bannerText">#EEDADADA</color>
     <color name="colorPrimary">#252530</color>
     <color name="colorPrimaryDark">#252530</color>
-    <color name="background">#ECECEC</color>
+    <color name="background">#DADADA</color>
+    <color name="backgroundWhite">#F2F2F2</color>
+    <color name="h1">#ECECEC</color>
     <color name="welcomeColorPrimaryDark">@color/material_indigo_A700</color>
     <color name="colorSecondary">@color/material_blue_500</color>
     <color name="colorSecondaryDark">@color/material_blue_500</color>

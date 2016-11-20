@@ -1,6 +1,10 @@
 package cn.call110;
 
 import android.app.Application;
+import android.util.TypedValue;
+
+import com.zhy.autolayout.config.AutoLayoutConifg;
+
 import java.util.concurrent.TimeUnit;
 import cn.call110.utils.DataUtils;
 import cn.call110.utils.http.OkHttpUtils;
@@ -25,5 +29,6 @@ public class AApplication extends Application {
 
         OkHttpUtils.initClient(okHttpClient);
         Realm.init(this);
+        AutoLayoutConifg.getInstance().useDeviceSize().init(this);
     }
 }

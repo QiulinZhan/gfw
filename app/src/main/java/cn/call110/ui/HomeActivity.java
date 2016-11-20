@@ -9,6 +9,7 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,21 +18,27 @@ import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
+import com.zhy.autolayout.AutoLayoutActivity;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import cn.call110.R;
 import cn.call110.adapter.HomeAdapter;
 import cn.call110.model.Banner;
 import cn.call110.model.HomeMenuItem;
+import cn.call110.utils.DataUtils;
 import cn.call110.utils.IntentUtils;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AutoLayoutActivity {
     private GridView mGridView;
     private HomeAdapter mAdapter;
     private List<HomeMenuItem> list;
@@ -58,12 +65,22 @@ public class HomeActivity extends AppCompatActivity {
         mGridView.setAdapter(mAdapter);
         toolbar.setOnMenuItemClickListener(e -> {
             if(R.id.setting == e.getItemId()){
-                IntentUtils.launch(this, SettingActivity.class);
+                DataUtils.remoteData();
                 return true;
             }
             return false;
         });
-
+        mGridView.setOnItemClickListener((parent, view, position, id) -> {
+            switch (position){
+                case 0 :
+                    IntentUtils.launch(this, SettingActivity.class);
+                    break;
+                case 1 :
+                    IntentUtils.launch(this, SmsActivity.class);
+                    break;
+                default: break;
+            }
+        });
         banner = (ConvenientBanner) findViewById(R.id.banner);
         //自定义你的Holder，实现更多复杂的界面，不一定是图片翻页，其他任何控件翻页亦可。
         banner.setPages(
@@ -74,14 +91,14 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 }, Arrays.asList(
                         new Banner().setImageId(R.mipmap.banner_1_1).setText("吉林省政府副省长、省委政法委副书记胡家福对反电信诈骗\n发表重要讲话"),
-                        new Banner().setImageId(R.mipmap.banner_1_1).setText("fsdfefsf"),
-                        new Banner().setImageId(R.mipmap.banner_1_1).setText("12312dssfe")))
+                        new Banner().setImageId(R.mipmap.banner_1_1).setText("吉林省政府副省长、省委政法委副书记胡家福对反电信诈骗\n发表重要讲话"),
+                        new Banner().setImageId(R.mipmap.banner_1_1).setText("吉林省政府副省长、省委政法委副书记胡家福对反电信诈骗\n发表重要讲话")))
                 //设置两个点图片作为翻页指示器，不设置则没有指示器，可以根据自己需求自行配合自己的指示器,不需要圆点指示器可用不设
                 .setPageIndicator(new int[]{R.mipmap.ic_page_indicator, R.mipmap.ic_page_indicator_focused})
                 //设置指示器的方向
                 .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT);
-        //设置翻页的效果，不需要翻页效果可用不设
-        //.setPageTransformer(Transformer.DefaultTransformer);    集成特效之后会有白屏现象，新版已经分离，如果要集成特效的例子可以看Demo的点击响应。
+//        设置翻页的效果，不需要翻页效果可用不设
+//        .setPageTransformer(Transformer.DefaultTransformer);    集成特效之后会有白屏现象，新版已经分离，如果要集成特效的例子可以看Demo的点击响应。
 //        convenientBanner.setManualPageable(false);//设置不能手动影响
     }
 
@@ -110,14 +127,6 @@ public class HomeActivity extends AppCompatActivity {
         MenuItem item =  (MenuItem) menu.findItem(R.id.setting);
         item.setIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_cog).color(ContextCompat.getColor(this, R.color.theme_window_background)).sizeDp(15));
         return true;
-    }
-
-    public static void launch(Activity activity) {
-        ActivityOptionsCompat options =
-                ActivityOptionsCompat.makeCustomAnimation(activity,
-                        R.anim.head_in, R.anim.head_out);
-        Intent intent = new Intent(activity, SettingActivity.class);
-        ActivityCompat.startActivity(activity, intent, options.toBundle());
     }
 
     @Override

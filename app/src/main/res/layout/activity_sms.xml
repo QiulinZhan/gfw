@@ -4,35 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="cn.call110.ui.SettingActivity">
+    tools:context="cn.call110.ui.SmsActivity">
     <include layout="@layout/toolbar" />
-    <!-- 来电提示 -->
     <Switch
-        android:background="@color/list_background_normal"
+        android:background="@color/backgroundWhite"
         android:layout_width="match_parent"
         android:layout_height="180px"
-        android:id="@+id/alertSwitch"
-        android:text="来电提示"
+        android:id="@+id/smsSwitch"
+        android:text="短信拦截"
         android:textSize="48px"
         android:textStyle="normal"
         android:textColor="@color/secondary"
         android:gravity="center_vertical"
         android:paddingLeft="36px"
         android:paddingRight="36px"/>
-    <Switch
-        android:background="@color/list_background_normal"
-        android:layout_width="match_parent"
-        android:layout_height="180px"
-        android:id="@+id/phoneSwitch"
-        android:text="电话拦截"
-        android:textSize="48px"
-        android:textStyle="normal"
-        android:textColor="@color/secondary"
-        android:gravity="center_vertical"
-        android:paddingLeft="36px"
-        android:paddingRight="36px"
-        android:layout_marginTop="1px"/>
-
     <com.baoyz.swipemenulistview.SwipeMenuListView
         android:id="@+id/list"
         android:background="@color/list_background_normal"
@@ -41,5 +26,4 @@
         android:layout_marginTop="30px"
         android:divider="@color/dividers"
         android:dividerHeight="1px"/>
-
 </LinearLayout>

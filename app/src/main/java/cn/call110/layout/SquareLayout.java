@@ -4,10 +4,13 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
+import com.zhy.autolayout.AutoLinearLayout;
+import com.zhy.autolayout.AutoRelativeLayout;
+
 /**
  * Created by qiulin on 2015/1/25 0025.
  */
-public class SquareLayout extends RelativeLayout {
+public class SquareLayout extends AutoRelativeLayout {
     public SquareLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }

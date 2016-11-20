@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cn.call110">
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
-    <uses-permission android:name="android.permission.READ_SMS"/>
-    <uses-permission android:name="android.permission.BROADCAST_SMS"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.BROADCAST_SMS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.WRITE_SMS" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
 
     <application
+        android:name=".AApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" android:name=".AApplication">
+        android:theme="@style/AppTheme">
         <activity
             android:name=".ui.WelcomeActivity"
             android:screenOrientation="portrait"
@@ -32,33 +34,45 @@
             android:name=".ui.HomeActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.SettingActivity"></activity>
+        <activity android:name=".ui.SettingActivity" />
         <!-- 拨打电话触发的广播 -->
-        <!--<receiver android:name=".service.PhoneReceiver">-->
-            <!--<intent-filter android:priority="1000">-->
-                <!--<action android:name="android.intent.action.PHONE_STATE"/>-->
-                <!--<action android:name="android.intent.action.NEW_OUTGOING_CALL" />-->
-            <!--</intent-filter>-->
-        <!--</receiver>-->
+        <!-- <receiver android:name=".service.PhoneReceiver"> -->
+        <!-- <intent-filter android:priority="1000"> -->
+        <!-- <action android:name="android.intent.action.PHONE_STATE"/> -->
+        <!-- <action android:name="android.intent.action.NEW_OUTGOING_CALL" /> -->
+        <!-- </intent-filter> -->
+        <!-- </receiver> -->
         <!-- 接收短信 -->
-        <receiver android:name=".receiver.SMSReceiver" >
-            <intent-filter android:priority="1000" >
+        <receiver android:name=".receiver.SMSReceiver">
+            <intent-filter android:priority="1000">
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
-                <action android:name="android.provider.Telephony.SMS_RECEIVED_2"/>
-                <action android:name="android.provider.Telephony.GSM_SMS_RECEIVED"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED_2" />
+                <action android:name="android.provider.Telephony.GSM_SMS_RECEIVED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
 
-        <!--<service android:name=".service.CallSmsSafeService" />-->
+        <!-- <service android:name=".service.CallSmsSafeService" /> -->
         <service android:name=".service.PhoneService" />
 
-        <receiver android:name=".receiver.PhoneReceiver" >
-            <intent-filter>{Manifest.permission.PROCESS_OUTGOING_CALLS, Manifest.permission.CALL_PHONE, Manifest.permission.READ_PHONE_STATE}
+        <receiver android:name=".receiver.PhoneReceiver">
+            <intent-filter>
+                {Manifest.permission.PROCESS_OUTGOING_CALLS, Manifest.permission.CALL_PHONE,
+                Manifest.permission.READ_PHONE_STATE}
                 <action android:name="android.intent.action.PHONE_STATE" />
                 <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
             </intent-filter>
         </receiver>
+
+        <meta-data
+            android:name="design_width"
+            android:value="1080" />
+        <meta-data
+            android:name="design_height"
+            android:value="1920" />
+
+        <activity android:name=".ui.SmsActivity"></activity>
     </application>
 
 </manifest>
