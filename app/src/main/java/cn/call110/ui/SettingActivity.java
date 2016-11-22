@@ -81,40 +81,33 @@ public class SettingActivity extends AutoLayoutActivity {
 
         madapter = new PhoneAdapter(this, dataList);
         mListView.setAdapter(madapter);
-        SwipeMenuCreator creator = new SwipeMenuCreator() {
-            @Override
-            public void create(SwipeMenu menu) {
-                SwipeMenuItem deleteItem = new SwipeMenuItem(
-                        getApplicationContext());
-                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
-                        0x3F, 0x25)));
-                deleteItem.setWidth(dp2px(90));
-                deleteItem.setIcon(R.mipmap.ic_delete);
-                menu.addMenuItem(deleteItem);
-            }
-        };
-        mListView.setMenuCreator(creator);
+        mListView.setMenuCreator(m -> {
+            SwipeMenuItem deleteItem = new SwipeMenuItem(
+                getApplicationContext());
+            deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+                    0x3F, 0x25)));
+            deleteItem.setWidth(dp2px(90));
+            deleteItem.setIcon(R.mipmap.ic_delete);
+            m.addMenuItem(deleteItem);
+        });
 
         // step 2. listener item click event
-        mListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-                switch (index) {
-                    case 0:
-                        realm.executeTransaction(e -> {
-                            dataList.deleteFromRealm(position);
-                            madapter.notifyDataSetChanged();
-                        });
-                        break;
-                    case 1:
-                        // delete
-//					delete(item);
-
-                        break;
-                }
-                return false;
+        mListView.setOnMenuItemClickListener((position, menu, index) -> {
+            switch (index) {
+                case 0:
+                    realm.executeTransaction(e -> {
+                        dataList.deleteFromRealm(position);
+                        madapter.notifyDataSetChanged();
+                    });
+                    break;
+                case 1:
+                    // delete
+    //					delete(item);
+                    break;
             }
+            return false;
         });
+
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

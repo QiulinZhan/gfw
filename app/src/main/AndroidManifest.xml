@@ -72,7 +72,9 @@
             android:name="design_height"
             android:value="1920" />
 
-        <activity android:name=".ui.SmsActivity"></activity>
+        <activity android:name=".ui.SmsActivity" />
+        <activity android:name=".ui.SearchActivity" />
+        <activity android:name=".ui.SuggestionActivity"></activity>
     </application>
 
 </manifest>

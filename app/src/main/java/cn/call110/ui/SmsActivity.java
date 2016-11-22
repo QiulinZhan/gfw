@@ -12,18 +12,12 @@ import android.util.TypedValue;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.baoyz.swipemenulistview.SwipeMenu;
-import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.zhy.autolayout.AutoLayoutActivity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.call110.R;
 import cn.call110.adapter.SmsAdapter;
-import cn.call110.model.FraudPhone;
 import cn.call110.model.FraudSms;
 import cn.call110.utils.DataUtils;
 import io.realm.Realm;
@@ -69,39 +63,32 @@ public class SmsActivity extends AutoLayoutActivity {
 
         madapter = new SmsAdapter(this, dataList);
         mListView.setAdapter(madapter);
-        SwipeMenuCreator creator = new SwipeMenuCreator() {
-            @Override
-            public void create(SwipeMenu menu) {
-                SwipeMenuItem deleteItem = new SwipeMenuItem(
-                        getApplicationContext());
-                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
-                        0x3F, 0x25)));
-                deleteItem.setWidth(dp2px(90));
-                deleteItem.setIcon(R.mipmap.ic_delete);
-                menu.addMenuItem(deleteItem);
-            }
-        };
-        mListView.setMenuCreator(creator);
+        mListView.setMenuCreator(m -> {
+            SwipeMenuItem deleteItem = new SwipeMenuItem(
+                    getApplicationContext());
+            deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+                    0x3F, 0x25)));
+            deleteItem.setWidth(dp2px(90));
+            deleteItem.setIcon(R.mipmap.ic_delete);
+            m.addMenuItem(deleteItem);
+        });
 
         // step 2. listener item click event
-        mListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-                switch (index) {
-                    case 0:
-                        realm.executeTransaction(e -> {
-                            dataList.deleteFromRealm(position);
-                            madapter.notifyDataSetChanged();
-                        });
-                        break;
-                    case 1:
-                        // delete
+        mListView.setOnMenuItemClickListener((position, menu, index) -> {
+            switch (index) {
+                case 0:
+                    realm.executeTransaction(e -> {
+                        dataList.deleteFromRealm(position);
+                        madapter.notifyDataSetChanged();
+                    });
+                    break;
+                case 1:
+                    // delete
 //					delete(item);
 
-                        break;
-                }
-                return false;
+                    break;
             }
+            return false;
         });
     }
 

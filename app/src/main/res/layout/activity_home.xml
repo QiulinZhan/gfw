@@ -1,178 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:id="@+id/activity_home"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="cn.call110.ui.HomeActivity">
-    <include layout="@layout/toolbar" />
 
-    <com.bigkoo.convenientbanner.ConvenientBanner
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/banner"
+    <GridView
+        android:id="@+id/grid"
         android:layout_width="match_parent"
-        android:layout_height="675px"
-        app:canLoop="true"
-        />
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="90px"
-        android:background="@color/backgroundWhite"
-        android:gravity="center_vertical"
-        android:layout_marginTop="21px">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30px"
-            android:text="防诈骗知识"
-            android:textSize="33px"
-            android:textColor="@color/text"/>
-        <ImageView
-            android:layout_width="32px"
-            android:layout_height="32px"
-            android:layout_marginRight="30px"
-            android:layout_alignParentRight="true"
-            android:src="@mipmap/arrow"/>
-    </RelativeLayout>
-    <HorizontalScrollView
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/banner"
-        android:background="@color/backgroundWhite"
-        android:scrollbars="none">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginLeft="30px">
-
-                <ImageView
-                    android:layout_width="782px"
-                    android:layout_height="378px"
-                    android:src="@mipmap/banner_2_01"
-                    android:scaleType="fitXY"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30px"
-                    android:textColor="@color/text"
-                    android:textAlignment="center"
-                    android:textSize="36px"
-                    android:text="2016年严打！12类网络诈骗违法人员" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/secondary"
-                    android:layout_marginTop="15px"
-                    android:textAlignment="center"
-                    android:textSize="27px"
-                    android:text="吉林省公安厅部署全省公安机关2016年严厉打击治理电信......"
-                    android:layout_marginBottom="30px"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_marginLeft="15px">
-
-                <ImageView
-                    android:layout_width="782px"
-                    android:layout_height="378px"
-                    android:src="@mipmap/banner_2_02"
-                    android:scaleType="fitXY"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30px"
-                    android:textColor="@color/text"
-                    android:textAlignment="center"
-                    android:textSize="36px"
-                    android:text="短信案件诈骗20例案件"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/secondary"
-                    android:layout_marginTop="15px"
-                    android:textAlignment="center"
-                    android:textSize="27px"
-                    android:text="吉林省公安厅部署全省公安机关2016年严厉打击治理电信......"
-                    android:layout_marginBottom="30px"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_marginLeft="15px">
-
-                <ImageView
-                    android:layout_width="782px"
-                    android:layout_height="378px"
-                    android:src="@mipmap/banner_2_03"
-                    android:scaleType="fitXY"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30px"
-                    android:textColor="@color/text"
-                    android:textAlignment="center"
-                    android:textSize="36px"
-                    android:text="当前电信诈骗的主要发案类型"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/secondary"
-                    android:layout_marginTop="15px"
-                    android:textAlignment="center"
-                    android:textSize="27px"
-                    android:text="吉林省公安厅部署全省公安机关2016年严厉打击治理电信......"
-                    android:layout_marginBottom="30px"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="228px"
-                android:layout_height="378px"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:background="@color/dividers"
-                android:layout_marginLeft="15px">
-
-                <ImageView
-                    android:layout_width="76px"
-                    android:layout_height="76px"
-                    android:src="@mipmap/icon_more"
-                    android:scaleType="fitXY"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="36px"
-                    android:textColor="@color/secondary"
-                    android:textAlignment="center"
-                    android:textSize="36px"
-                    android:text="查看更多"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-    </HorizontalScrollView>
-    <LinearLayout
-        android:layout_width="wrap_content"
+        android:numColumns="4"
+        android:horizontalSpacing="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="60px"
+        android:layout_marginLeft="30px"
+        android:layout_marginRight="30px"/>
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:layout_marginRight="30px"
-        android:layout_marginLeft="30px">
-        <GridView
-            android:id="@+id/grid"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:numColumns="4"
-            android:horizontalSpacing="20dp" />
-    </LinearLayout>
+        android:layout_above="@id/grid"
+        android:layout_marginBottom="60px"
+        >
 
-</LinearLayout>
+    </WebView>
+</RelativeLayout>

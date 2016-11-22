@@ -1,6 +1,5 @@
 package cn.call110.sms;
 
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.ContentObserver;
@@ -11,7 +10,6 @@ import android.os.Handler;
 import java.util.Date;
 import java.util.List;
 
-import cn.call110.model.FraudPhone;
 import cn.call110.model.FraudSms;
 import cn.call110.utils.DateUtils;
 import io.realm.Realm;
@@ -82,9 +80,7 @@ public class SmsObserver extends ContentObserver {
 //                    if(phoneList.stream().filter(e->e.equals(address)).findFirst().isPresent()){
                     String body = c.getString(c.getColumnIndex("body"));
                     int id = c.getInt(c.getColumnIndex("_id"));
-
                     int cout =  CR.delete(Uri.parse("content://sms"), "_id=" + id, null);
-                    cout =  CR.delete(Uri.parse("content://sms"), "address=" + address, null);
                     Realm realm = Realm.getDefaultInstance();
                     realm.executeTransaction(e -> {
                         FraudSms fp = realm.createObject(FraudSms.class);
@@ -104,8 +100,6 @@ public class SmsObserver extends ContentObserver {
 
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-
         }
     }
 }
