@@ -47,11 +47,4 @@ public class WelcomeActivity extends Activity {
         timer.cancel();
         super.onDestroy();
     }
-    public static void launch(Activity activity) {
-        ActivityOptionsCompat options =
-                ActivityOptionsCompat.makeCustomAnimation(activity,
-                        R.anim.head_in, R.anim.head_out);
-        Intent intent = new Intent(activity, WelcomeActivity.class);
-        ActivityCompat.startActivity(activity, intent, options.toBundle());
-    }
 }

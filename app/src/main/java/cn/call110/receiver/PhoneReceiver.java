@@ -19,27 +19,37 @@ import cn.call110.utils.DateUtils;
 import io.realm.Realm;
 
 public class PhoneReceiver extends BroadcastReceiver {
-	private String phoneNumber = "";
+	private Phone phone;
 	private TelephonyManager tm;
 	private Context context;
-	private static boolean isOutcalling = false;
-	private boolean isAlert = false;
+	private Realm realm;
+	// 是否拨出电话
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		realm = Realm.getDefaultInstance();
 		this.context = context;
+		// 拨打电话
 		if (intent.getAction() == Intent.ACTION_NEW_OUTGOING_CALL) {
-			phoneNumber = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
+			// 如果主动拨打诈骗电话 有提醒
+			// 获取号码
+			String phoneNumber = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
+			// 号码处理
 			phoneNumber = numberTrim(phoneNumber);
-			if (phoneNumber != null) {
-				isOutcalling = true;
-				startService(context, phoneNumber, true);
-			}
-		}
-		tm = (TelephonyManager) context
-				.getSystemService(Context.TELEPHONY_SERVICE);
-		tm.listen(listener, PhoneStateListener.LISTEN_CALL_STATE);
 
+			if (phoneNumber != null) {
+				phone = realm.copyFromRealm(realm.where(Phone.class).equalTo("phone", phoneNumber).findFirst());
+				realm.close();
+				if(phone != null){
+					startService(context, phone.getRemark(), true); // 开启提示窗
+				}
+			}
+		} else {
+		// 如果是来电则注册电话状态监听
+			tm = (TelephonyManager) context
+					.getSystemService(Context.TELEPHONY_SERVICE);
+			tm.listen(listener, PhoneStateListener.LISTEN_CALL_STATE);
+		}
 	}
 
 	PhoneStateListener listener = new PhoneStateListener() {
@@ -48,45 +58,28 @@ public class PhoneReceiver extends BroadcastReceiver {
 
 			super.onCallStateChanged(state, incomingNumber);
 			switch (state) {
+				// 挂断
 				case TelephonyManager.CALL_STATE_IDLE:
-					// System.out.println("IDLE");
-					if (isOutcalling)
-						isOutcalling = false;
-					else
-						startService(context, phoneNumber, false);
+					startService(context, "", false); // 关闭提示窗
 					break;
+				// 电话接听
 				case TelephonyManager.CALL_STATE_OFFHOOK:
 					break;
+				// 电话等待
 				case TelephonyManager.CALL_STATE_RINGING:
-					boolean phoneHeadOff = DataUtils.getDate(DataUtils.phoneHeadOff);
-					if(phoneHeadOff){
-						for(Phone p : DataUtils.black){
-							if(incomingNumber.equals(p.getPhone())){
-								stopCall(incomingNumber, p.getRemark());
-								return;
-							}
+					boolean alertSwitch = DataUtils.getDate(DataUtils.alertSwitch); // 来电提示开关
+					boolean phoneHeadOff = DataUtils.getDate(DataUtils.phoneHeadOff); // 电话拦截开关
+
+					// 如果开启电话拦截
+					if(alertSwitch || phoneHeadOff){
+						realm = Realm.getDefaultInstance();
+						phone = realm.where(Phone.class).equalTo("phone", incomingNumber).findFirst();
+						if(phoneHeadOff && "1".equals(phone.getType())){ // 如果拦截开关开启且来电号码是黑名单则拦截
+							stopCall();
+						} else { // 来电号码是白名单，来电提示开关开启
+							startService(context, phone.getRemark(), true); // 来电提示窗口开启
 						}
-					}
-					isAlert = DataUtils.getDate(DataUtils.alertSwitch);
-					if(isAlert){
-						for(Phone p : DataUtils.white){
-							if(incomingNumber.equals(p.getPhone())){
-								isOutcalling = false;
-								phoneNumber = incomingNumber;
-								startService(context, p.getRemark(), true);
-								return;
-							}
-						}
-						if(!phoneHeadOff){
-							for(Phone p : DataUtils.black){
-								if(incomingNumber.equals(p.getPhone())){
-									isOutcalling = false;
-									phoneNumber = incomingNumber;
-									startService(context, p.getRemark(), true);
-									return;
-								}
-							}
-						}
+						realm.close();
 					}
 			}
 		}
@@ -94,9 +87,10 @@ public class PhoneReceiver extends BroadcastReceiver {
 
 	/**
 	 * 启动服务
-	 *
+	 * msg
 	 * @param context
-	 * @param
+	 * @param msg 提示信息如（骚扰电话）
+	 * @param operation true：开启提示窗，false：关闭提示窗
 	 */
 	private void startService(Context context, String msg,
 							  boolean operation) {
@@ -119,7 +113,8 @@ public class PhoneReceiver extends BroadcastReceiver {
 		return phoneNumber;
 	}
 
-	public void stopCall(String phone, String remark) {
+
+	public void stopCall() {
 		try {
 			Method getITelephonyMethod = TelephonyManager.class
 					.getDeclaredMethod("getITelephony", (Class[]) null);
@@ -128,16 +123,17 @@ public class PhoneReceiver extends BroadcastReceiver {
 					(Object[]) null);
 			// 拒接来电
 			telephony.endCall();
-			Realm realm = Realm.getDefaultInstance();
+			// 新增已拦截电话记录
+			realm = Realm.getDefaultInstance();
 			realm.executeTransaction(e -> {
 				FraudPhone fp = realm.createObject(FraudPhone.class);
-				fp.setPhone(phone);
+				fp.setPhone(phone.getPhone());
 				fp.setCreateTime(DateUtils.formatDateTime(new Date()));
-				fp.setRemark(remark);
+				fp.setRemark(phone.getRemark());
 			});
-			realm.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
 }

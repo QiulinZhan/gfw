@@ -9,6 +9,7 @@ import io.realm.annotations.RealmClass;
  */
 @RealmClass
 public class FraudPhone extends RealmObject {
+    @PrimaryKey
     private String phone;
     private String city;
     private String remark;

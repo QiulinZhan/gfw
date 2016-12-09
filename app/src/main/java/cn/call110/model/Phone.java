@@ -1,10 +1,14 @@
 package cn.call110.model;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by Zane on 2016/11/9.
  */
 
-public class Phone {
+public class Phone extends RealmObject {
+    @PrimaryKey
     private Long id;
     private String phone;
     private String city;
