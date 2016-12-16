@@ -4,27 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
     android:background="@color/material_indigo_A700">
-    <LinearLayout
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        >
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="loading页"
-                android:layout_gravity="center_horizontal"
-                style="@style/IndexFont"
-                android:layout_marginTop="30dp"
-                android:gravity="center"/>
-
-        </LinearLayout>
-    </LinearLayout>
+        android:layout_height="match_parent"
+        android:src="@mipmap/loading"
+        android:scaleType="centerCrop"/>
 </LinearLayout>

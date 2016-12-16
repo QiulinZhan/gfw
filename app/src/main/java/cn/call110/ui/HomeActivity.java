@@ -15,6 +15,7 @@ import cn.call110.R;
 import cn.call110.adapter.HomeAdapter;
 import cn.call110.model.FraudPhone;
 import cn.call110.model.HomeMenuItem;
+import cn.call110.utils.DataUtils;
 import cn.call110.utils.IntentUtils;
 import cn.call110.utils.RealmUtils;
 import io.realm.Realm;
@@ -68,13 +69,19 @@ public class HomeActivity extends AutoLayoutActivity {
         webview.setWebViewClient(new WebViewClient());
         //加载需要显示的网页
         webview.loadUrl("http://221.8.52.247/fdxzpapp/html/index.html");
+        DataUtils.initPhoneList();
     }
 
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-            moveTaskToBack(true);
+            if(webview.canGoBack()) {
+                webview.goBack();
+                return true;
+            } else {
+                moveTaskToBack(true);
+            }
         }
         return super.onKeyDown(keyCode, event);
     }

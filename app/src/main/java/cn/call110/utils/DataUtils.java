@@ -37,7 +37,7 @@ public class DataUtils {
         }
     }
 
-    private static String url = "http://192.168.1.180:8092/zw/p/getblackphone";
+    private static String url = "http://138.128.204.17:8081/zw/p/getblackphone";
     public static void remoteData() {
         OkHttpUtils.get()
                 .url(url)
