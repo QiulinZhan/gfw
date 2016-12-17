@@ -35,14 +35,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
         <activity android:name=".ui.SettingActivity" />
-        <!-- 拨打电话触发的广播 -->
-        <!-- <receiver android:name=".service.PhoneReceiver"> -->
-        <!-- <intent-filter android:priority="1000"> -->
-        <!-- <action android:name="android.intent.action.PHONE_STATE"/> -->
-        <!-- <action android:name="android.intent.action.NEW_OUTGOING_CALL" /> -->
-        <!-- </intent-filter> -->
-        <!-- </receiver> -->
-        <!-- 接收短信 -->
+
         <receiver android:name=".receiver.SMSReceiver">
             <intent-filter android:priority="1000">
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
@@ -53,13 +46,10 @@
             </intent-filter>
         </receiver>
 
-        <!-- <service android:name=".service.CallSmsSafeService" /> -->
         <service android:name=".service.PhoneService" />
 
         <receiver android:name=".receiver.PhoneReceiver">
-            <intent-filter>
-                {Manifest.permission.PROCESS_OUTGOING_CALLS, Manifest.permission.CALL_PHONE,
-                Manifest.permission.READ_PHONE_STATE}
+            <intent-filter android:priority="1000">
                 <action android:name="android.intent.action.PHONE_STATE" />
                 <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
             </intent-filter>

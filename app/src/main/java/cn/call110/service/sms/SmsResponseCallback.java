@@ -1,4 +1,4 @@
-package cn.call110.sms;
+package cn.call110.service.sms;
 
 /**
  * Created by Zane on 2016/11/13.

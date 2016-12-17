@@ -1,4 +1,4 @@
-package cn.call110.sms;
+package cn.call110.service.sms;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -28,13 +28,6 @@ public class SmsObserver extends ContentObserver {
         this.phoneList = phoneList;
     }
 
-    /***
-     * 设置短信过滤器
-     * @param smsFilter
-     */
-//    public void setSmsFilter(SmsFilter smsFilter) {
-//        mHandler.setSmsFilter(smsFilter);
-//    }
 
     /***
      * 注册短信变化观察者
@@ -44,8 +37,7 @@ public class SmsObserver extends ContentObserver {
     public void registerSMSObserver() {
         Uri uri = Uri.parse("content://sms");
         if (mContext != null) {
-            mContext.getContentResolver().registerContentObserver(uri,
-                    true, this);
+            mContext.getContentResolver().registerContentObserver(uri, true, this);
         }
     }
 
@@ -72,14 +64,14 @@ public class SmsObserver extends ContentObserver {
         Uri inboxUri = Uri.parse("content://sms/inbox");//收件箱
         try {
             ContentResolver CR = mContext.getContentResolver();
-            Cursor c = CR.query(inboxUri, null, null,
-                    null, "date desc");
+            Cursor c = CR.query(inboxUri, null, null, null, "date desc");
             if (c != null) {
                 if (c.moveToFirst()) {
                     String address = c.getString(c.getColumnIndex("address"));
 //                    if(phoneList.stream().filter(e->e.equals(address)).findFirst().isPresent()){
                     String body = c.getString(c.getColumnIndex("body"));
                     int id = c.getInt(c.getColumnIndex("_id"));
+
                     int cout =  CR.delete(Uri.parse("content://sms"), "_id=" + id, null);
                     Realm realm = Realm.getDefaultInstance();
                     realm.executeTransaction(e -> {
@@ -90,11 +82,11 @@ public class SmsObserver extends ContentObserver {
 //                            fp.setRemark(remark);
                     });
                     realm.close();
-                    unregisterSMSObserver();
 //                    }
 //                    Log.i(getClass().getName(), "发件人为：" + address + " " + "短信内容为：" + body);
                 }
                 c.close();
+                unregisterSMSObserver();
             }
         } catch (SecurityException e) {
 
