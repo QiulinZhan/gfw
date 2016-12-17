@@ -3,14 +3,11 @@ package cn.call110.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
 import android.telephony.SmsMessage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.call110.model.Phone;
-import cn.call110.sms.SmSUtils;
 import cn.call110.sms.SmsHandler;
 import cn.call110.sms.SmsObserver;
 import cn.call110.sms.SmsResponseCallback;

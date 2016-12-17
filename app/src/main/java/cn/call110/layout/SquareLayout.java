@@ -2,9 +2,7 @@ package cn.call110.layout;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.RelativeLayout;
 
-import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;
 
 /**

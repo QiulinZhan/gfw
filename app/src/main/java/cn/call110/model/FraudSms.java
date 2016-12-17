@@ -1,7 +1,6 @@
 package cn.call110.model;
 
 import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.RealmClass;
 
 /**

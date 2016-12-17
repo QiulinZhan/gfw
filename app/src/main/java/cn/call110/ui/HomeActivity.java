@@ -6,20 +6,17 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import com.zhy.autolayout.AutoLayoutActivity;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import cn.call110.R;
 import cn.call110.adapter.HomeAdapter;
-import cn.call110.model.FraudPhone;
 import cn.call110.model.HomeMenuItem;
 import cn.call110.utils.DataUtils;
 import cn.call110.utils.IntentUtils;
-import cn.call110.utils.RealmUtils;
-import io.realm.Realm;
-import io.realm.RealmResults;
 
 public class HomeActivity extends AutoLayoutActivity {
     private GridView mGridView;

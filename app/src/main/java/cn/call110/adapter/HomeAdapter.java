@@ -1,11 +1,8 @@
 package cn.call110.adapter;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.shapes.Shape;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

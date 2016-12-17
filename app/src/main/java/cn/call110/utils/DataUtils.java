@@ -2,8 +2,11 @@ package cn.call110.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
 import com.google.gson.Gson;
+
 import org.apache.commons.lang3.StringUtils;
+
 import cn.call110.model.FraudPhone;
 import cn.call110.model.JsonObject;
 import cn.call110.model.Phone;
