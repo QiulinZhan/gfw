@@ -8,9 +8,10 @@ import android.telephony.SmsMessage;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.call110.sms.SmsHandler;
-import cn.call110.sms.SmsObserver;
-import cn.call110.sms.SmsResponseCallback;
+import cn.call110.model.Phone;
+import cn.call110.service.sms.SmsHandler;
+import cn.call110.service.sms.SmsObserver;
+import cn.call110.service.sms.SmsResponseCallback;
 import cn.call110.utils.DataUtils;
 
 /**
@@ -44,8 +45,6 @@ public class SMSReceiver extends BroadcastReceiver {
         if(DataUtils.getDate(DataUtils.smsHeadOff)){
             Object[] messages = (Object[]) intent.getSerializableExtra("pdus");
             String format = intent.getStringExtra("format");
-            int pduCount = messages.length;
-            SmsMessage[] msgs = new SmsMessage[messages.length];
             List<String> phone = new ArrayList<>();
             for (Object obj : messages) {
                 SmsMessage sms = SmsMessage.createFromPdu((byte[]) obj, format);
@@ -57,11 +56,7 @@ public class SMSReceiver extends BroadcastReceiver {
 //                    }
 //                }
                 if(!phone.isEmpty()){
-                    smsObserver = new SmsObserver(context, phone, new SmsHandler(new SmsResponseCallback() {
-                        @Override
-                        public void onCallbackSmsContent(String smsContent) {
-                        }
-                    }));
+                    smsObserver = new SmsObserver(context, phone, new SmsHandler((content) -> {} ));
                     smsObserver.registerSMSObserver();
                 }
             }
