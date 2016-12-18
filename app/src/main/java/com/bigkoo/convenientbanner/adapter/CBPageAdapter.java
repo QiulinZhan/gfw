@@ -9,7 +9,7 @@ import com.bigkoo.convenientbanner.view.CBLoopViewPager;
 
 import java.util.List;
 
-import cn.call110.R;
+import cn.call110.zw.R;
 
 /**
  * Created by Sai on 15/7/29.

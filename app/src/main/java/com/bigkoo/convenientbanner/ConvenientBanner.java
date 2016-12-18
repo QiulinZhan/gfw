@@ -26,7 +26,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.call110.R;
+import cn.call110.zw.R;
 
 /**
  * 页面翻转控件，极方便的广告栏

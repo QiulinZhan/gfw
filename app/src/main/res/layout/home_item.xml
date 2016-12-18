@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<cn.call110.layout.SquareLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<cn.call110.zw.layout.SquareLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -25,4 +25,4 @@
         />
 
     <!--android:background="@drawable/menuitemshape"-->
-</cn.call110.layout.SquareLayout>
+</cn.call110.zw.layout.SquareLayout>
