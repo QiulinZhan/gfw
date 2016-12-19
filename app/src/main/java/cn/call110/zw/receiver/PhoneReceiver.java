@@ -17,17 +17,16 @@ import cn.call110.zw.service.PhoneService;
 import cn.call110.zw.utils.DataUtils;
 import cn.call110.zw.utils.DateUtils;
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class PhoneReceiver extends BroadcastReceiver {
 	private Phone phone;
 	private TelephonyManager tm;
 	private Context context;
-	private Realm realm;
 	// 是否拨出电话
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		realm = Realm.getDefaultInstance();
 		this.context = context;
 		// 拨打电话
 		if (intent.getAction() == Intent.ACTION_NEW_OUTGOING_CALL) {
@@ -38,6 +37,7 @@ public class PhoneReceiver extends BroadcastReceiver {
 			phoneNumber = numberTrim(phoneNumber);
 
 			if (phoneNumber != null) {
+				Realm realm = Realm.getDefaultInstance();
 				phone = realm.copyFromRealm(realm.where(Phone.class).equalTo("phone", phoneNumber).findFirst());
 				realm.close();
 				if(phone != null){
@@ -67,23 +67,43 @@ public class PhoneReceiver extends BroadcastReceiver {
 					break;
 				// 电话等待
 				case TelephonyManager.CALL_STATE_RINGING:
-					boolean alertSwitch = DataUtils.getDate(DataUtils.alertSwitch); // 来电提示开关
-					boolean phoneHeadOff = DataUtils.getDate(DataUtils.phoneHeadOff); // 电话拦截开关
-
-					// 如果开启电话拦截
-					if(alertSwitch || phoneHeadOff){
-						realm = Realm.getDefaultInstance();
-						phone = realm.where(Phone.class).equalTo("phone", incomingNumber).findFirst();
-						if(phoneHeadOff && "1".equals(phone.getType())){ // 如果拦截开关开启且来电号码是黑名单则拦截
-							stopCall();
-						} else { // 来电号码是白名单，来电提示开关开启
-							startService(context, phone.getRemark(), true); // 来电提示窗口开启
-						}
-						realm.close();
-					}
+					callRinging(incomingNumber);
 			}
 		}
+
 	};
+
+	private void callRinging(String incomingNumber) {
+		boolean alertSwitch = DataUtils.getDate(DataUtils.alertSwitch); // 来电提示开关
+		boolean phoneHeadOff = DataUtils.getDate(DataUtils.phoneHeadOff); // 电话拦截开关
+		// 如果开启电话拦截
+		if(alertSwitch || phoneHeadOff){
+			try (Realm realm = Realm.getDefaultInstance()) {
+				phone = realm.copyFromRealm(realm.where(Phone.class).equalTo("phone", incomingNumber).findFirst());
+				if(phoneHeadOff && phone.getType() == 1){ // 如果拦截开关开启且来电号码是黑名单则拦截
+					Method getITelephonyMethod = TelephonyManager.class
+							.getDeclaredMethod("getITelephony", (Class[]) null);
+					getITelephonyMethod.setAccessible(true);
+					ITelephony telephony = (ITelephony) getITelephonyMethod.invoke(tm,
+							(Object[]) null);
+					// 拒接来电
+					telephony.endCall();
+					// 新增已拦截电话记录
+
+					realm.executeTransaction(e -> {
+						FraudPhone fp = realm.createObject(FraudPhone.class, phone.getPhone());
+						fp.setCreateTime(DateUtils.formatDateTime(new Date()));
+						fp.setRemark(phone.getRemark());
+					});
+				} else if(alertSwitch) { // 来电号码是白名单，来电提示开关开启
+					startService(context, phone.getRemark(), true); // 来电提示窗口开启
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
 
 	/**
 	 * 启动服务
@@ -111,29 +131,6 @@ public class PhoneReceiver extends BroadcastReceiver {
 		if (phoneNumber != null && phoneNumber.startsWith("+86"))
 			phoneNumber = phoneNumber.substring(3);
 		return phoneNumber;
-	}
-
-
-	public void stopCall() {
-		try {
-			Method getITelephonyMethod = TelephonyManager.class
-					.getDeclaredMethod("getITelephony", (Class[]) null);
-			getITelephonyMethod.setAccessible(true);
-			ITelephony telephony = (ITelephony) getITelephonyMethod.invoke(tm,
-					(Object[]) null);
-			// 拒接来电
-			telephony.endCall();
-			// 新增已拦截电话记录
-			realm = Realm.getDefaultInstance();
-			realm.executeTransaction(e -> {
-				FraudPhone fp = realm.createObject(FraudPhone.class);
-				fp.setPhone(phone.getPhone());
-				fp.setCreateTime(DateUtils.formatDateTime(new Date()));
-				fp.setRemark(phone.getRemark());
-			});
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 }

@@ -31,41 +31,41 @@ public class PhoneService extends Service{
         final String msg = intent.getStringExtra("msg");
         final boolean showFlag = intent.getBooleanExtra("showFlag", false);
 
-        if (msg.length() > 0) {
-            if (!showFlag) {
-                if (windowManager != null) {
-                    windowManager.removeView(alert);
-                }
-                windowManager = null;
-                alert = null;
-                this.stopSelf();
-            } else {
-                if (windowManager == null) {
-                    windowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-                    params = new WindowManager.LayoutParams();
-                    params.type = WindowManager.LayoutParams.TYPE_PHONE;
-                    params.format = PixelFormat.RGBA_8888;
-                    params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                            | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
-                    params.gravity = Gravity.CENTER;
-                    params.y = -150;
-                    alert = new AlertUI(this);
-                    calcLength(msg);
-                    int height = alert.getMeasuredHeight();
-                    int width = alert.getMeasuredWidth();
 
-                    // 须指定宽度高度信息
-                    params.width = width;
-                    params.height = height;
-
-                    params.x = AlertUI.x;
-                    params.y = AlertUI.y;
-
-                    windowManager.addView(alert, params);
-                }
+        if (!showFlag) {
+            if (windowManager != null) {
+                windowManager.removeView(alert);
             }
+            windowManager = null;
+            alert = null;
+            this.stopSelf();
+        } else {
+            if (windowManager == null) {
+                windowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+                params = new WindowManager.LayoutParams();
+                params.type = WindowManager.LayoutParams.TYPE_PHONE;
+                params.format = PixelFormat.RGBA_8888;
+                params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                        | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+                params.gravity = Gravity.CENTER;
+                params.y = -150;
+                alert = new AlertUI(this);
+                calcLength(msg);
+                int height = alert.getMeasuredHeight();
+                int width = alert.getMeasuredWidth();
 
+                // 须指定宽度高度信息
+                params.width = width;
+                params.height = height;
+
+                params.x = AlertUI.x;
+                params.y = AlertUI.y;
+
+                windowManager.addView(alert, params);
+            }
         }
+
+
 
         return super.onStartCommand(intent, flags, startId);
     }

@@ -1,7 +1,10 @@
 package cn.call110.zw.ui;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.view.KeyEvent;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -57,18 +60,19 @@ public class HomeActivity extends AutoLayoutActivity {
             }
         });
         webview = (WebView) findViewById(R.id.webView);
+        webview.setWebViewClient(new WebViewClient());
         webview.getSettings().setJavaScriptEnabled(true);
         webview.setHorizontalScrollBarEnabled(false);//水平不显示
         webview.setVerticalScrollBarEnabled(false); //垂直不显示
         webview.getSettings().setUseWideViewPort(true);//自适应屏幕
         webview.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         webview.getSettings().setLoadWithOverviewMode(true);
-        webview.setWebViewClient(new WebViewClient());
         //加载需要显示的网页
-        webview.loadUrl("http://221.8.52.247/fdxzpapp/html/index.html");
-        DataUtils.initPhoneList();
-    }
 
+        DataUtils.initPhoneList();
+        webview.loadUrl("http://221.8.52.247/fdxzpapp/html/index.html");
+
+    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
