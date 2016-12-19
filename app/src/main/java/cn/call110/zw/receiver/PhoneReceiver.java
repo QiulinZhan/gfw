@@ -8,6 +8,8 @@ import android.telephony.TelephonyManager;
 
 import com.android.internal.telephony.ITelephony;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.lang.reflect.Method;
 import java.util.Date;
 
@@ -17,17 +19,16 @@ import cn.call110.zw.service.PhoneService;
 import cn.call110.zw.utils.DataUtils;
 import cn.call110.zw.utils.DateUtils;
 import io.realm.Realm;
-import io.realm.RealmResults;
 
 public class PhoneReceiver extends BroadcastReceiver {
-	private Phone phone;
 	private TelephonyManager tm;
 	private Context context;
-	// 是否拨出电话
+	private boolean isShow = false;
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		this.context = context;
+		isShow = false;
 		// 拨打电话
 		if (intent.getAction() == Intent.ACTION_NEW_OUTGOING_CALL) {
 			// 如果主动拨打诈骗电话 有提醒
@@ -38,10 +39,10 @@ public class PhoneReceiver extends BroadcastReceiver {
 
 			if (phoneNumber != null) {
 				Realm realm = Realm.getDefaultInstance();
-				phone = realm.copyFromRealm(realm.where(Phone.class).equalTo("phone", phoneNumber).findFirst());
+				Phone phone = realm.copyFromRealm(realm.where(Phone.class).equalTo("phone", phoneNumber).findFirst());
 				realm.close();
 				if(phone != null){
-					startService(context, phone.getRemark(), true); // 开启提示窗
+					startService(context, phone.getRemark()); // 开启提示窗
 				}
 			}
 		} else {
@@ -60,7 +61,7 @@ public class PhoneReceiver extends BroadcastReceiver {
 			switch (state) {
 				// 挂断
 				case TelephonyManager.CALL_STATE_IDLE:
-					startService(context, "", false); // 关闭提示窗
+					startService(context, ""); // 关闭提示窗
 					break;
 				// 电话接听
 				case TelephonyManager.CALL_STATE_OFFHOOK:
@@ -70,7 +71,6 @@ public class PhoneReceiver extends BroadcastReceiver {
 					callRinging(incomingNumber);
 			}
 		}
-
 	};
 
 	private void callRinging(String incomingNumber) {
@@ -79,7 +79,7 @@ public class PhoneReceiver extends BroadcastReceiver {
 		// 如果开启电话拦截
 		if(alertSwitch || phoneHeadOff){
 			try (Realm realm = Realm.getDefaultInstance()) {
-				phone = realm.copyFromRealm(realm.where(Phone.class).equalTo("phone", incomingNumber).findFirst());
+				Phone phone = realm.copyFromRealm(realm.where(Phone.class).equalTo("phone", incomingNumber).findFirst());
 				if(phoneHeadOff && phone.getType() == 1){ // 如果拦截开关开启且来电号码是黑名单则拦截
 					Method getITelephonyMethod = TelephonyManager.class
 							.getDeclaredMethod("getITelephony", (Class[]) null);
@@ -96,13 +96,12 @@ public class PhoneReceiver extends BroadcastReceiver {
 						fp.setRemark(phone.getRemark());
 					});
 				} else if(alertSwitch) { // 来电号码是白名单，来电提示开关开启
-					startService(context, phone.getRemark(), true); // 来电提示窗口开启
+					startService(context, phone.getRemark()); // 来电提示窗口开启
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-
 	}
 
 	/**
@@ -110,16 +109,20 @@ public class PhoneReceiver extends BroadcastReceiver {
 	 * msg
 	 * @param context
 	 * @param msg 提示信息如（骚扰电话）
-	 * @param operation true：开启提示窗，false：关闭提示窗
 	 */
-	private void startService(Context context, String msg,
-							  boolean operation) {
-		if (msg != null && msg.length() > 0) {
-			Intent intent = new Intent(context,PhoneService.class);
-			intent.putExtra("msg",msg);
-			intent.putExtra("showFlag", operation);
-			context.startService(intent);
+	private void startService(Context context, String msg) {
+		boolean show = false;
+		if (isShow) {
+		} else if(StringUtils.isNotBlank(msg)) {
+			show = true;
+			isShow = true;
+		} else {
+			return;
 		}
+		Intent intent = new Intent(context,PhoneService.class);
+		intent.putExtra("msg",msg);
+		intent.putExtra("showFlag", show);
+		context.startService(intent);
 	}
 
 	/**

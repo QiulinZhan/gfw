@@ -1,10 +1,7 @@
 package cn.call110.zw.ui;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.view.KeyEvent;
-import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -41,7 +38,6 @@ public class HomeActivity extends AutoLayoutActivity {
         }
         mAdapter = new HomeAdapter(this, list);
         mGridView.setAdapter(mAdapter);
-
         mGridView.setOnItemClickListener((parent, view, position, id) -> {
             switch (position){
                 case 0 :

@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.os.Build;
 import android.os.IBinder;
 import android.view.Gravity;
 import android.view.View;
@@ -30,8 +31,6 @@ public class PhoneService extends Service{
 
         final String msg = intent.getStringExtra("msg");
         final boolean showFlag = intent.getBooleanExtra("showFlag", false);
-
-
         if (!showFlag) {
             if (windowManager != null) {
                 windowManager.removeView(alert);
@@ -43,7 +42,11 @@ public class PhoneService extends Service{
             if (windowManager == null) {
                 windowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
                 params = new WindowManager.LayoutParams();
-                params.type = WindowManager.LayoutParams.TYPE_PHONE;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    params.type = WindowManager.LayoutParams.TYPE_TOAST;
+                } else {
+                    params.type = WindowManager.LayoutParams.TYPE_PHONE;
+                }
                 params.format = PixelFormat.RGBA_8888;
                 params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
@@ -64,9 +67,6 @@ public class PhoneService extends Service{
                 windowManager.addView(alert, params);
             }
         }
-
-
-
         return super.onStartCommand(intent, flags, startId);
     }
 
